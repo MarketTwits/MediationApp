@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MediationApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="symbols_template">%s / %s</string>
+    <string name="last_update_template">Время последнего обновления: %s</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello">ПРИВЕТ</string>
+    <string name="enjoy_the_qualifiers">Наслаждайся отборочными.\nБудь внимателен.\nДелай хорошо.</string>
+    <string name="add_in_acc">Войти в аккаунт</string>
+    <string name="no_acc_registration">Еще нет аккаунта? Зарегистрируйтесь</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Забыли пароль ?</string>
+    <string name="profile">Профиль</string>
+    <string name="hi_emil">С возвращением, Эмиль !</string>
+    <string name="how_do_you_fell">Каким ты себя чувствуешь сегодня ?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="block_title">Заголовок блока</string>
+</resources>

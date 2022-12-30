@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "266026720706",
+    "firebase_url": "https://mediationapp-fbe2c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mediationapp-fbe2c",
+    "storage_bucket": "mediationapp-fbe2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266026720706:android:908634ba9c9bfdb6d48a5b",
+        "android_client_info": {
+          "package_name": "com.example.mediationapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266026720706-l2e5ie5adn0nlab9fl1r9rr8kf9lihkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-DiWXp6GkMxdFQrk4z_uqDVQ0rzrvoRw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266026720706-l2e5ie5adn0nlab9fl1r9rr8kf9lihkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
