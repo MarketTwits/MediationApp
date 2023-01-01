@@ -15,9 +15,6 @@ class EntryActivity : AppCompatActivity() {
         setContentView(binding.root)
         fragmentNavigation(R.id.entry_fragment_container, WelcomeFragment())
 
-
-
-
     }
     fun fragmentNavigation(fragmentCotnainer : Int, fragment : Fragment ){
         supportFragmentManager.beginTransaction()

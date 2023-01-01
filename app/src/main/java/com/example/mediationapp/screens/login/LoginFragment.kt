@@ -23,14 +23,6 @@ class LoginFragment : Fragment() {
 
     lateinit var binding: FragmentLoginBinding
     lateinit var viewModel: AuthViewModel
-    private val userDbReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://mediationapp-fbe2c-default-rtdb.asia-southeast1.firebasedatabase.app/")
-
-//    val ref= FirebaseDatabase.getInstance().getReference().child("note");
-//    private val uid = FirebaseAuth.getInstance().getCurrentUser()?.getUid();
-//
-//    init {
-//        ref.child(uid.toString()).child("запись")
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,20 +35,12 @@ class LoginFragment : Fragment() {
         binding.btProfile.setOnClickListener {
             checkUser()
         }
-            //
-
-//        FirebaseDatabase.getInstance().reference
-//            .child(FirebaseRepository.USER_KEY).child("User").setValue("DiadiaMisha")
-
-        //
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
-
         setupListeners()
     }
     private fun setupListeners(){

@@ -32,13 +32,10 @@ class WelcomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this)[WelcomeViewModel::class.java]
-
         binding.signInButton.setOnClickListener {
-
             fragmentNavigation(R.id.entry_fragment_container, LoginFragment())
         }
         binding.tvRegistration.setOnClickListener {
-
             fragmentNavigation(R.id.entry_fragment_container, RegistrationFragment())
         }
     }

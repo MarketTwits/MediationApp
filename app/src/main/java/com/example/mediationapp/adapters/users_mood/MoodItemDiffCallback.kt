@@ -1,4 +1,4 @@
-package com.example.mediationapp.adapters
+package com.example.mediationapp.adapters.users_mood
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mediationapp.model.MeditationElement

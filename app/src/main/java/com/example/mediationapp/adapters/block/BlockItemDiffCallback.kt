@@ -1,4 +1,4 @@
-package com.example.mediationapp.adapters
+package com.example.mediationapp.adapters.block
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mediationapp.model.BlockElement

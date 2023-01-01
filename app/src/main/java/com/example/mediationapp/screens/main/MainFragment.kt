@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mediationapp.adapters.BlockItemAdapter
+import com.example.mediationapp.adapters.block.BlockItemAdapter
+import com.example.mediationapp.adapters.feelings.FeelingsItemAdapter
 import com.example.mediationapp.databinding.FragmentMainBinding
 import com.example.mediationapp.model.BlockElement
+import com.example.mediationapp.model.FeelingsElement
 import com.example.mediationapp.screens.welcome.EntryActivity
 import com.example.mediationapp.servcie.FirebaseService
 import java.util.*
-import java.util.EnumSet.range
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,7 +23,8 @@ import java.util.EnumSet.range
 
 class MainFragment : Fragment() {
     lateinit var binding : FragmentMainBinding
-    private lateinit var adapter: BlockItemAdapter
+    private lateinit var blockAdapter: BlockItemAdapter
+    private lateinit var feelingsAdapter: FeelingsItemAdapter
 
 
     override fun onCreateView(
@@ -54,18 +56,33 @@ class MainFragment : Fragment() {
 
     private fun setupTypeRecyclerView(){
 
-        adapter = BlockItemAdapter()
-        binding.rvBlocks.adapter = adapter
+        //BlockFeeleings
+        feelingsAdapter = FeelingsItemAdapter()
+        binding.rvUserseFeelengs.adapter = feelingsAdapter
+        val horizontallyManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvUserseFeelengs.layoutManager = horizontallyManager
+
+        feelingsAdapter.onFeelingsItemClickListener = {
+            Toast.makeText(requireContext(), it.title.toString(), Toast.LENGTH_SHORT).show()
+        }
+
+        val block_item = createFeeling()
+        for (i in 1..15){
+            feelingsAdapter.addItem(block_item)
+        }
+        //BlockRV
+        blockAdapter = BlockItemAdapter()
+        binding.rvBlocks.adapter = blockAdapter
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvBlocks.layoutManager = layoutManager
 
-        adapter.onBlockClickListener = {
+        blockAdapter.onBlockClickListener = {
             Toast.makeText(requireContext(), it.title.toString(), Toast.LENGTH_SHORT).show()
         }
 
         val item = createBlock()
         for (i in 1..15){
-            adapter.addItem(item)
+            blockAdapter.addItem(item)
         }
     }
     private fun createBlock(): BlockElement {
@@ -77,6 +94,15 @@ class MainFragment : Fragment() {
             "Краткое описание блока двумя строчками",
             "mainText",
             "https://pcdn.columbian.com/wp-content/uploads/2021/06/0615_fea_meditation.jpg"
+        )
+    }
+    private fun createFeeling(): FeelingsElement {
+        val id = Random().nextInt()
+
+        return FeelingsElement(
+            id,
+            "Кайфы",
+            "https://i.pinimg.com/originals/bd/d5/38/bdd538c4dba6bcdb9960f3499c42288b.png",
         )
     }
 

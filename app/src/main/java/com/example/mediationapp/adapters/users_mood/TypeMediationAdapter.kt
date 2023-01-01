@@ -1,4 +1,4 @@
-package com.example.mediationapp.adapters
+package com.example.mediationapp.adapters.users_mood
 
 
 import android.view.LayoutInflater
@@ -14,8 +14,8 @@ import com.example.mediationapp.model.MeditationElement
 
 class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val meditationList = mutableListOf<MeditationElement>()
 
+    var meditationList = mutableListOf<MeditationElement>()
 
     interface OnMeditationClickListener {
         fun onMeditationClick()
@@ -91,10 +91,13 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             VIEW_TYPE_ITEM
         }
     }
+    fun setMediationList(items : List<MeditationElement>){
+        meditationList = items.toMutableList()
+        notifyDataSetChanged()
+    }
     fun deleteItem(item : MeditationElement){
         meditationList.remove(item)
         notifyItemRemoved(meditationList.size -1)
-
     }
     fun addItem(item: MeditationElement) {
         meditationList.add(item)
@@ -110,3 +113,4 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val VIEW_TYPE_ADD = 1
     }
 }
+
