@@ -31,8 +31,9 @@ class UserProfileFragment : Fragment() {
         return binding.root
     }
 
-        private fun setupTypeRecyclerView(){
-    adapter = TypeMediationAdapter()
+    private fun setupTypeRecyclerView(){
+
+    adapter = TypeMediationAdapter(viewModel.list.value!!)
     binding.rvUsersMood.adapter = adapter
     val layoutManager = GridLayoutManager(context, 2)
     binding.rvUsersMood.layoutManager = layoutManager
@@ -43,5 +44,6 @@ class UserProfileFragment : Fragment() {
         }
         adapter.setMediationList(it)
     }
+
     }
 }

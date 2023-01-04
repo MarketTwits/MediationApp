@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mediationapp.R
 import com.example.mediationapp.model.MeditationElement
+import kotlinx.coroutines.NonDisposableHandle.parent
+import kotlin.coroutines.coroutineContext
 
-class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TypeMediationAdapter(var meditationList : MutableList<MeditationElement>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    var meditationList = mutableListOf<MeditationElement>()
+    //var meditationList = mutableListOf<MeditationElement>()
 
     interface OnMeditationClickListener {
         fun onMeditationClick()
@@ -25,14 +27,15 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onAddClick(meditation: MeditationElement)
     }
 
-    inner class MeditationViewHolder(itemView: View, clickListener: OnMeditationClickListener) :
+
+
+    inner class MeditationViewHolder(itemView: View, clickListener : OnMeditationClickListener) :
         RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.im_item_image_mood)
         val textView: TextView = itemView.findViewById(R.id.tv_item_time)
 
         init {
             itemView.setOnClickListener {
-                //clickListener.onMeditationClick(meditationList[adapterPosition])
                 clickListener.onMeditationClick()
             }
         }
@@ -47,9 +50,9 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.setOnClickListener {
                 clickListener.onAddClick(meditationList[bindingAdapterPosition])
             }
+
         }
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -60,6 +63,7 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         Toast.makeText(parent.context, "Clicked", Toast.LENGTH_SHORT).show()
                     }
                 })
+
             }
             VIEW_TYPE_ADD -> {
                 val view = inflater.inflate(R.layout.item_add_mood_users, parent, false)
@@ -80,6 +84,12 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.textView.text = element.timeAdded
                 Glide.with(holder.itemView).load(element.imageUrl).into(holder.imageView)
 
+                holder.itemView.setOnLongClickListener {
+                    deleteItem(element, position)
+                    true
+                }
+
+
             }
         }
     }
@@ -95,9 +105,9 @@ class TypeMediationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         meditationList = items.toMutableList()
         notifyDataSetChanged()
     }
-    fun deleteItem(item : MeditationElement){
-        meditationList.remove(item)
-        notifyItemRemoved(meditationList.size -1)
+    fun deleteItem(element : MeditationElement, position: Int){
+        meditationList.remove(element)
+        notifyItemRemoved(position)
     }
     fun addItem(item: MeditationElement) {
         meditationList.add(item)

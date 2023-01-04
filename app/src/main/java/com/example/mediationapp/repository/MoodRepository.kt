@@ -8,25 +8,31 @@ import java.util.*
 
 class MoodRepository() {
 
-    private val list = MutableLiveData<List<MeditationElement>>()
+    private val list = MutableLiveData<MutableList<MeditationElement>>()
+
+    // It's fake list from api or database
+    val currentList = list.value?.toMutableList() ?: mutableListOf()
 
     init {
-        val testListMeditation : List<MeditationElement> = listOf(addItem(), addItem(), addItem())
+        val testListMeditation : MutableList<MeditationElement> =
+            listOf(addItem(), addItem(), addItem()).toMutableList()
         list.value = testListMeditation
     }
 
-    fun getList(): LiveData<List<MeditationElement>> {
+    fun getList(): LiveData<MutableList<MeditationElement>> {
         return list
     }
 
     fun addItem(item: MeditationElement) {
-        val currentList = list.value?.toMutableList() ?: mutableListOf()
         currentList.add(item)
+        list.value = currentList
+    }
+    fun deleteItem(item: MeditationElement){
+        currentList.remove(item)
         list.value = currentList
     }
 
     fun removeItem(item: MeditationElement) {
-        val currentList = list.value?.toMutableList() ?: mutableListOf()
         currentList.remove(item)
         list.value = currentList
     }

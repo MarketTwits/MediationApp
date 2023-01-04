@@ -62,8 +62,9 @@ class MainFragment : Fragment() {
         val horizontallyManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvUserseFeelengs.layoutManager = horizontallyManager
 
+        //TODO
         feelingsAdapter.onFeelingsItemClickListener = {
-            Toast.makeText(requireContext(), it.title.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
         }
 
         val block_item = createFeeling()
