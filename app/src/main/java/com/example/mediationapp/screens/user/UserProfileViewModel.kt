@@ -49,12 +49,13 @@ class UserProfileViewModel : ViewModel() {
             deleteMoodInDatabase(item)
         }
     }
-
     fun createItem() : MeditationElement {
+        val auth = FirebaseAuth.getInstance().currentUser?.uid
         val id = Random().nextInt()
+        val userId = auth
         val sdf = SimpleDateFormat("hh:mm")
         val currentDate = sdf.format(Date())
-        val newItem = MeditationElement(id, "https://example.com/image.jpg", currentDate)
+        val newItem = MeditationElement(id, userId, "https://example.com/image.jpg", currentDate)
         return newItem
     }
 
@@ -67,6 +68,15 @@ class UserProfileViewModel : ViewModel() {
             }
             .addOnFailureListener { exeption ->
                 Log.d("UserProfileViewModel", "item added failed: ${exeption.message}") }
+
+//        val ref = FirebaseDatabase.getInstance().getReference("UserMood")
+//        ref.child("${item.id}")
+//            .setValue(item)
+//            .addOnSuccessListener {
+//                Log.d("UserProfileViewModel", "item added success")
+//            }
+//            .addOnFailureListener { exeption ->
+//                Log.d("UserProfileViewModel", "item added failed: ${exeption.message}") }
     }
     private fun deleteMoodInDatabase(item: MeditationElement){
         val dR = FirebaseDatabase.getInstance().getReference("UserMood").child(item.id.toString())
