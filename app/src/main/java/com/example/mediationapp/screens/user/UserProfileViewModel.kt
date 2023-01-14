@@ -46,8 +46,7 @@ class UserProfileViewModel : ViewModel() {
             repository.deleteItem(item)
         }
     }
-    fun createItem() : MeditationElement {
-        val auth = FirebaseAuth.getInstance().currentUser?.uid
+    private fun createItem() : MeditationElement {
         val id = Random().nextInt()
         val userId = auth
         val sdf = SimpleDateFormat("hh:mm")

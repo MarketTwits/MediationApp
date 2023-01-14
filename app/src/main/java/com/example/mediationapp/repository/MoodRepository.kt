@@ -21,8 +21,6 @@ import kotlin.time.measureTime
 
 class MoodRepository() {
 
-
-    //private val list = MutableLiveData<MutableList<MeditationElement>>()
     val sharedList = MutableSharedFlow<List<MeditationElement>>()
     private val auth = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -32,6 +30,7 @@ class MoodRepository() {
             .getReference("Users") //user table
             .child(auth.toString())     //user id
             .child("MoodList") //mood list row
+
         moodListDb.child("${item.id}") //mood item
             .setValue(item)
             .addOnSuccessListener {

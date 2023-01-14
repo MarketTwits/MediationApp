@@ -55,6 +55,7 @@ class UserProfileFragment : Fragment() {
 
             viewModel.getList()
             binding.progressBar.isVisible = true
+
             viewModel.list.observe(viewLifecycleOwner) {
                 binding.progressBar.isVisible = false
                 adapter.list = it

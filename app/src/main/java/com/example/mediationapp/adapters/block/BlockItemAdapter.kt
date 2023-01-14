@@ -16,10 +16,7 @@ class BlockItemAdapter : ListAdapter<BlockElement,
         RecyclerView.ViewHolder(binding.root) {
 
     }
-    private var blockList = mutableListOf<BlockElement>()
-
     var onBlockClickListener : ((BlockElement) -> Unit)? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockViewHolder {
 
@@ -27,25 +24,15 @@ class BlockItemAdapter : ListAdapter<BlockElement,
 
         return BlockViewHolder(binding)
     }
-
     override fun onBindViewHolder(holder: BlockViewHolder, position: Int) {
         val binding = holder.binding
-        val element = blockList[position]
-
+        val element = getItem(position)
         binding.btDetailed.setOnClickListener {
             onBlockClickListener?.invoke(element)
         }
-
         binding.tvBlockTitle.text = element.title
         binding.tvBlockDescription.text = element.description
         Glide.with(binding.imBlock).load(element.imageUrl).into(binding.imBlock)
-
-
-    }
-    fun addItem(blockElement: BlockElement){
-        blockList.add(blockElement)
-        submitList(blockList)
-        notifyItemInserted(blockList.size + 1)
     }
 
     override fun getItemCount(): Int {

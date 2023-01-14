@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mediationapp.adapters.block.BlockItemAdapter
 import com.example.mediationapp.adapters.feelings.FeelingsItemAdapter
@@ -23,6 +26,7 @@ import java.util.*
 
 class MainFragment : Fragment() {
     lateinit var binding : FragmentMainBinding
+    lateinit var viewModel: MainViewModel
     private lateinit var blockAdapter: BlockItemAdapter
     private lateinit var feelingsAdapter: FeelingsItemAdapter
 
@@ -32,6 +36,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View{
         binding = FragmentMainBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         return binding.root
     }
 
@@ -40,7 +45,9 @@ class MainFragment : Fragment() {
         binding.imMenuIcon.setOnClickListener {
             logOutUser()
         }
+        loadBlockViewModel()
         setupTypeRecyclerView()
+        setupBlockRecyclerView()
     }
     private fun logOutUser(){
         /*
@@ -54,48 +61,39 @@ class MainFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun setupTypeRecyclerView(){
+    private fun setupTypeRecyclerView() {
+
 
         //BlockFeeleings
         feelingsAdapter = FeelingsItemAdapter()
         binding.rvUserseFeelengs.adapter = feelingsAdapter
-        val horizontallyManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val horizontallyManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvUserseFeelengs.layoutManager = horizontallyManager
 
         //TODO
         feelingsAdapter.onFeelingsItemClickListener = {
             Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
         }
-
         val block_item = createFeeling()
-        for (i in 1..15){
+        for (i in 1..15) {
             feelingsAdapter.addItem(block_item)
         }
-        //BlockRV
-        blockAdapter = BlockItemAdapter()
-        binding.rvBlocks.adapter = blockAdapter
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.rvBlocks.layoutManager = layoutManager
-
-        blockAdapter.onBlockClickListener = {
-            Toast.makeText(requireContext(), it.title.toString(), Toast.LENGTH_SHORT).show()
-        }
-
-        val item = createBlock()
-        for (i in 1..15){
-            blockAdapter.addItem(item)
-        }
     }
-    private fun createBlock(): BlockElement {
-        val id = Random().nextInt()
-
-        return BlockElement(
-            id,
-            "Title",
-            "Краткое описание блока двумя строчками",
-            "mainText",
-            "https://pcdn.columbian.com/wp-content/uploads/2021/06/0615_fea_meditation.jpg"
-        )
+    private fun setupBlockRecyclerView(){
+        viewModel.getList()
+        //BlockRV
+        binding.progressBarBlocks.isVisible = true
+        viewModel.list.observe(viewLifecycleOwner) {
+            blockAdapter = BlockItemAdapter()
+            binding.rvBlocks.adapter = blockAdapter
+            binding.rvBlocks.layoutManager = LinearLayoutManager(requireContext())
+            blockAdapter.onBlockClickListener = {
+                Toast.makeText(requireContext(), it.title.toString(), Toast.LENGTH_SHORT).show()
+            }
+            blockAdapter.submitList(it)
+            binding.progressBarBlocks.isVisible = false
+        }
     }
     private fun createFeeling(): FeelingsElement {
         val id = Random().nextInt()
@@ -105,6 +103,10 @@ class MainFragment : Fragment() {
             "Кайфы",
             "https://i.pinimg.com/originals/bd/d5/38/bdd538c4dba6bcdb9960f3499c42288b.png",
         )
+    }
+    private fun loadBlockViewModel(){
+        viewModel.createBlocks()
+
     }
 
 
