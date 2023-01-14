@@ -24,48 +24,66 @@ class MoodRepository() {
 
     //private val list = MutableLiveData<MutableList<MeditationElement>>()
     val sharedList = MutableSharedFlow<List<MeditationElement>>()
+    private val auth = FirebaseAuth.getInstance().currentUser?.uid
 
     fun addItem(item: MeditationElement) {
-        //list.value?.add(item)
+        val auth = FirebaseAuth.getInstance().currentUser?.uid
+        val moodListDb = FirebaseDatabase.getInstance()
+            .getReference("Users") //user table
+            .child(auth.toString())     //user id
+            .child("MoodList") //mood list row
+        moodListDb.child("${item.id}") //mood item
+            .setValue(item)
+            .addOnSuccessListener {
+                Log.d("UserProfileViewModel", "item added success")
+            }
+            .addOnFailureListener { exeption ->
+                Log.d("UserProfileViewModel", "item added failed: ${exeption.message}") }
     }
 
     fun deleteItem(item: MeditationElement) {
-        //list.value?.remove(item)
+        val moodListDb = FirebaseDatabase.getInstance()
+            .getReference("Users")
+            .child(auth.toString())
+            .child("MoodList")
+            .child(item.id.toString())
+        moodListDb.removeValue()
+            .addOnSuccessListener {
+                Log.d("UserProfileViewModel", "item deleted success")
+            }
+            .addOnFailureListener {
+                Log.d("UserProfileViewModel", "delete error")
+            }
     }
 
-     fun loadDataMoods()  {
-            val ref = FirebaseDatabase.getInstance().getReference("UserMood")
-            ref.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                 getMeditationElements(snapshot)
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
+    fun loadDataMoods()  {
+        val moodListDb = FirebaseDatabase.getInstance()
+            .getReference("Users")
+            .child(auth.toString())
+            .child("MoodList")
+        moodListDb.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                getMeditationElements(snapshot)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
-    @OptIn(ExperimentalTime::class)
     private fun getMeditationElements(snapshot : DataSnapshot) {
-        val authId = FirebaseAuth.getInstance().currentUser?.uid
         val scope = CoroutineScope(Dispatchers.Main)
         val list = arrayListOf<MeditationElement>()
         scope.launch {
             try {
-                val time  = measureTime {
                     for (moodSnapshot in snapshot.children){
-                        val moodId = moodSnapshot.child("userId").getValue(String::class.java)
-                        if (authId == moodId) {
                             val item = moodSnapshot.getValue(MeditationElement::class.java)
                             if (item != null) {
                                 list.add(item)
                             }
-                        }
                     }
                     sharedList.emit(list)
-                }
-                Log.e("ERROR_TAG", time.toString())
             }catch (e : Exception){
-                Log.e("ERROR_TAG", "Error loading list ---> " +  e.message.toString())
+                Log.e("ERROR_TAG", "Error loading list ---> ${e.message}" +  e.message.toString())
             }
         }
     }

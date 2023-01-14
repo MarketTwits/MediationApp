@@ -19,7 +19,7 @@ import java.util.*
 class UserProfileViewModel : ViewModel() {
 
     private val repository = MoodRepository()
-    private lateinit var firebaseAuth: FirebaseAuth
+    private val auth = FirebaseAuth.getInstance().currentUser?.uid
 
     val list =  MutableLiveData<List<MeditationElement>>()
 
@@ -36,17 +36,14 @@ class UserProfileViewModel : ViewModel() {
             }
         }
     }
-
     fun addItem() {
         viewModelScope.launch {
-            addMoodInDatabase(createItem())
             repository.addItem(createItem())
         }
     }
     fun deleteItem(item: MeditationElement) {
         viewModelScope.launch {
             repository.deleteItem(item)
-            deleteMoodInDatabase(item)
         }
     }
     fun createItem() : MeditationElement {
@@ -58,36 +55,4 @@ class UserProfileViewModel : ViewModel() {
         val newItem = MeditationElement(id, userId, "https://example.com/image.jpg", currentDate)
         return newItem
     }
-
-    private fun addMoodInDatabase(item: MeditationElement){
-        val ref = FirebaseDatabase.getInstance().getReference("UserMood")
-        ref.child("${item.id}")
-            .setValue(item)
-            .addOnSuccessListener {
-                Log.d("UserProfileViewModel", "item added success")
-            }
-            .addOnFailureListener { exeption ->
-                Log.d("UserProfileViewModel", "item added failed: ${exeption.message}") }
-
-//        val ref = FirebaseDatabase.getInstance().getReference("UserMood")
-//        ref.child("${item.id}")
-//            .setValue(item)
-//            .addOnSuccessListener {
-//                Log.d("UserProfileViewModel", "item added success")
-//            }
-//            .addOnFailureListener { exeption ->
-//                Log.d("UserProfileViewModel", "item added failed: ${exeption.message}") }
-    }
-    private fun deleteMoodInDatabase(item: MeditationElement){
-        val dR = FirebaseDatabase.getInstance().getReference("UserMood").child(item.id.toString())
-        dR.removeValue()
-            .addOnSuccessListener {
-            Log.d("UserProfileViewModel", "item deleted success")
-        }
-            .addOnFailureListener {
-                Log.d("UserProfileViewModel", "delete error")
-            }
-    }
-
-
 }

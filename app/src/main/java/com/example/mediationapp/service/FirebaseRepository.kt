@@ -5,9 +5,12 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.example.mediationapp.MainActivity
+import com.example.mediationapp.model.MeditationElement
+import com.example.mediationapp.model.User
 import com.example.mediationapp.screens.welcome.EntryActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlin.random.Random
 
 class FirebaseRepository {
     private val auth = FirebaseAuth.getInstance()
@@ -23,7 +26,7 @@ class FirebaseRepository {
                     Toast.makeText(context, "Ok", Toast.LENGTH_SHORT).show()
 
                     //Add user in database
-                    updateUserInfo(name, email, context)
+                    createUserData(name, email, age, context)
                 }else{
                     Toast.makeText(context, "Error ${it.exception}", Toast.LENGTH_SHORT).show()
                 }
@@ -46,31 +49,33 @@ class FirebaseRepository {
                 }
             }
     }
-    private fun updateUserInfo(name: String, email: String, context: Context){
-        val timeStamp = System.currentTimeMillis()
+    private fun createUserData(name: String, email: String,age : String, context: Context){
         val uid = auth.uid
-        val hashMap : HashMap<String, Any?> = HashMap()
-        hashMap["uid"] = uid
-        hashMap["name"] = name
-        hashMap["email"] = email
-        hashMap["image"] = "image"
+//        val hashMap : HashMap<String, Any?> = HashMap()
+//        hashMap["uid"] = uid
+//        hashMap["name"] = name
+//        hashMap["email"] = email
+//        hashMap["image"] = "image"
 
+        val user = User(
+            uId = uid,
+            email = email,
+            name = name,
+            age = age,
+            mediationList = emptyList()
+        )
         val ref = FirebaseDatabase.getInstance().getReference("Users")
-
-        if (uid != null) {
-            ref.child(uid)
-                .setValue(hashMap)
+        val userDatabase = uid?.let { ref.child(it) }
+        if (userDatabase != null) {
+            userDatabase
+                .setValue(user)
                 .addOnCompleteListener {
                     Toast.makeText(context, "Account created", Toast.LENGTH_SHORT).show()
-                    //---->
-                    //context.startActivity(Intent())
-                    //launch activity here
-                    //---->
                 }
                 .addOnFailureListener{
                     Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
                     Log.d("FirebaseRepository", "Exception: ${it.message}")
-                }
+            }
         }
 
     }
