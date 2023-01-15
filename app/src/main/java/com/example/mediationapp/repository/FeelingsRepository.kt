@@ -1,10 +1,8 @@
 package com.example.mediationapp.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.mediationapp.model.BlockElement
-import com.example.mediationapp.model.MeditationElement
+import com.example.mediationapp.model.FeelingsElement
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,28 +13,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-class BlockRepository {
+class FeelingsRepository {
 
-    val sharedList = MutableSharedFlow<List<BlockElement>>()
+    val sharedList = MutableSharedFlow<List<FeelingsElement>>()
 
-    fun addItem(item: BlockElement) {
-        val auth = FirebaseAuth.getInstance().currentUser?.uid
+    fun addItem(item: FeelingsElement) {
         val blockListDb = FirebaseDatabase.getInstance()
-            .getReference("Blocks").child("ListOfBlocks")
+            .getReference("Feelings").child("ListOfFeelings")
 
         blockListDb.child("${item.id}") //mood item
             .setValue(item)
             .addOnSuccessListener {
-                Log.d("BlockRepo", "item added success")
+                Log.d("FeelingsRepo", "item added success")
             }
             .addOnFailureListener { exeption ->
-                Log.d("BlockRepo", "item added failed: ${exeption.message}") }
+                Log.d("FeelingsRepo", "item added failed: ${exeption.message}") }
     }
-    fun loadBlockItems(){
-        val list = arrayListOf<BlockElement>()
+    fun loadFeelingItems(){
+        val list = arrayListOf<FeelingsElement>()
         val blockListDb = FirebaseDatabase.getInstance()
-            .getReference("Blocks") //user table
-            .child("ListOfBlocks")     //user id
+            .getReference("Feelings") //user table
+            .child("ListOfFeelings")     //user id
 
         blockListDb.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -44,18 +41,17 @@ class BlockRepository {
                 // Get the data from the snapshot
                 scope.launch {
                     try {
-                    for (blockSnapshot in snapshot.children){
-                        val item = blockSnapshot.getValue(BlockElement::class.java)
-                        if (item != null) {
-                            list.add(item)
+                        for (blockSnapshot in snapshot.children){
+                            val item = blockSnapshot.getValue(FeelingsElement::class.java)
+                            if (item != null) {
+                                list.add(item)
+                            }
                         }
-                    }
-                    sharedList.emit(list)
+                        sharedList.emit(list)
                     }catch (e : Exception){
-                    Log.e("MOOD_REPO", "Error loading list ---> ${e.message}" +  e.message.toString())
-                  }
+                        Log.e("FeelingsRepo", "Error loading list ---> ${e.message}" +  e.message.toString())
+                    }
                 }
-
                 // Do something with the data
             }
 

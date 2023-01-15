@@ -18,7 +18,6 @@ class FeelingsItemAdapter : ListAdapter<FeelingsElement,
         RecyclerView.ViewHolder(binding.root) {
 
     }
-    private var feelingsList = mutableListOf<FeelingsElement>()
 
     var onFeelingsItemClickListener : ((FeelingsElement) -> Unit)? = null
 
@@ -31,7 +30,7 @@ class FeelingsItemAdapter : ListAdapter<FeelingsElement,
 
     override fun onBindViewHolder(holder: FeelingsViewHolder, position: Int) {
         val binding = holder.binding
-        val element = feelingsList[position]
+        val element = getItem(position)
 
         binding.imFeelingsItem.setOnClickListener {
             onFeelingsItemClickListener?.invoke(element)
@@ -40,14 +39,5 @@ class FeelingsItemAdapter : ListAdapter<FeelingsElement,
         Glide.with(binding.imFeelingsItem).load(element.imageUrl).into(binding.imFeelingsItem)
 
 
-    }
-    fun addItem(feelingsElement: FeelingsElement){
-        feelingsList.add(feelingsElement)
-        submitList(feelingsList)
-        notifyItemInserted(feelingsList.size + 1)
-    }
-
-    override fun getItemCount(): Int {
-        return super.getItemCount()
     }
 }

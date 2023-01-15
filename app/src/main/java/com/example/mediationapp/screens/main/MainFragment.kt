@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mediationapp.adapters.block.BlockItemAdapter
 import com.example.mediationapp.adapters.feelings.FeelingsItemAdapter
@@ -18,6 +19,7 @@ import com.example.mediationapp.model.BlockElement
 import com.example.mediationapp.model.FeelingsElement
 import com.example.mediationapp.screens.welcome.EntryActivity
 import com.example.mediationapp.servcie.FirebaseService
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -45,7 +47,8 @@ class MainFragment : Fragment() {
         binding.imMenuIcon.setOnClickListener {
             logOutUser()
         }
-        loadBlockViewModel()
+        viewModel.getList()
+        //loadDataViewModel()
         setupTypeRecyclerView()
         setupBlockRecyclerView()
     }
@@ -63,28 +66,25 @@ class MainFragment : Fragment() {
 
     private fun setupTypeRecyclerView() {
 
-
         //BlockFeeleings
-        feelingsAdapter = FeelingsItemAdapter()
-        binding.rvUserseFeelengs.adapter = feelingsAdapter
-        val horizontallyManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvUserseFeelengs.layoutManager = horizontallyManager
+        viewModel.feelingsList.observe(viewLifecycleOwner){
+            feelingsAdapter = FeelingsItemAdapter()
+            binding.rvUserseFeelengs.adapter = feelingsAdapter
+            val horizontallyManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            binding.rvUserseFeelengs.layoutManager = horizontallyManager
 
-        //TODO
-        feelingsAdapter.onFeelingsItemClickListener = {
-            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
-        }
-        val block_item = createFeeling()
-        for (i in 1..15) {
-            feelingsAdapter.addItem(block_item)
+            //TODO
+            feelingsAdapter.onFeelingsItemClickListener = {
+                Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+            }
+            feelingsAdapter.submitList(it)
         }
     }
     private fun setupBlockRecyclerView(){
-        viewModel.getList()
         //BlockRV
         binding.progressBarBlocks.isVisible = true
-        viewModel.list.observe(viewLifecycleOwner) {
+        viewModel.blockList.observe(viewLifecycleOwner) {
             blockAdapter = BlockItemAdapter()
             binding.rvBlocks.adapter = blockAdapter
             binding.rvBlocks.layoutManager = LinearLayoutManager(requireContext())
@@ -95,18 +95,12 @@ class MainFragment : Fragment() {
             binding.progressBarBlocks.isVisible = false
         }
     }
-    private fun createFeeling(): FeelingsElement {
-        val id = Random().nextInt()
 
-        return FeelingsElement(
-            id,
-            "Кайфы",
-            "https://i.pinimg.com/originals/bd/d5/38/bdd538c4dba6bcdb9960f3499c42288b.png",
-        )
-    }
-    private fun loadBlockViewModel(){
-        viewModel.createBlocks()
-
+    private fun loadDataViewModel(){
+        lifecycleScope.launch {
+            viewModel.createFeelings()
+            //viewModel.createBlocks()
+        }
     }
 
 
