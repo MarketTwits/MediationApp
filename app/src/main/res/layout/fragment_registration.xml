@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_theame_green"
-    tools:context=".screens.registration.RegistrationFragment">
+    tools:context=".presentor.screens.registration.RegistrationFragment">
 
     <EditText
         android:id="@+id/ed_age"

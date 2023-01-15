@@ -17,10 +17,10 @@
         android:theme="@style/Theme.MediationApp"
         tools:targetApi="31">
         <activity
-            android:name=".screens.welcome.EntryActivity"
+            android:name=".presentor.screens.welcome.EntryActivity"
             android:exported="false" />
         <activity
-            android:name=".servcie.SplashScreenActivity"
+            android:name=".presentor.screens.splash.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashTheame">
             <intent-filter>
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentor.screens.main.MainActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->

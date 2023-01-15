@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_theame_green"
-    tools:context=".screens.user.UserProfileFragment">
+    tools:context=".presentor.screens.user.UserProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -55,8 +55,6 @@
         android:id="@+id/linear_layout_top_panel"
         android:layout_width="match_parent"
         android:layout_height="106dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.welcome.EntryActivity">
+    tools:context=".presentor.screens.welcome.EntryActivity">
 
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/entry_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.mediationapp.screens.login.LoginFragment">
+        android:name="com.example.mediationapp.presentor.screens.login.LoginFragment">
     </androidx.fragment.app.FragmentContainerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

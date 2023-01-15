@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_theame_green"
-    tools:context=".screens.main.MainFragment">
+    tools:context=".presentor.screens.main.MainFragment">
 
     <TextView
         android:id="@+id/tv_welcome_main"
