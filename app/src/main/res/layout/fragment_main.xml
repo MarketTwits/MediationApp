@@ -35,23 +35,32 @@
         app:layout_constraintStart_toStartOf="@+id/tv_welcome_main"
         app:layout_constraintTop_toBottomOf="@+id/tv_welcome_main" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_blocks"
-        android:layout_width="wrap_content"
-        android:layout_height="513dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:orientation="vertical"
-        android:paddingBottom="?attr/actionBarSize"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_userse_feelengs"
-        app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/item_main_block" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_userse_feelengs">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_blocks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="?attr/actionBarSize"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_userse_feelengs"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/item_main_block" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_userse_feelengs"
@@ -122,14 +131,14 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressBarBlocks"
+        android:id="@+id/progressBarBlock"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rv_blocks"
-        app:layout_constraintStart_toStartOf="@+id/rv_blocks"
-        app:layout_constraintTop_toTopOf="@+id/rv_blocks" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

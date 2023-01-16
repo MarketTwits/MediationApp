@@ -79,7 +79,7 @@ class MainFragment : Fragment() {
     }
     private fun setupBlockRecyclerView(){
         //BlockRV
-        binding.progressBarBlocks.isVisible = true
+        binding.progressBarBlock.isVisible = true
         viewModel.blockList.observe(viewLifecycleOwner) {
             blockAdapter = BlockItemAdapter()
             binding.rvBlocks.adapter = blockAdapter
@@ -88,7 +88,7 @@ class MainFragment : Fragment() {
                 Toast.makeText(requireContext(), it.title.toString(), Toast.LENGTH_SHORT).show()
             }
             blockAdapter.submitList(it)
-            binding.progressBarBlocks.isVisible = false
+            binding.progressBarBlock.isVisible = false
         }
     }
 

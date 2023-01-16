@@ -23,4 +23,7 @@
     <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name = "bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
+    <style name="ThemeOverlay.AppTheme.TextInputEditText.Outlined" parent="">
+        <item name="colorPrimary">@color/white</item>
+    </style>
 </resources>
