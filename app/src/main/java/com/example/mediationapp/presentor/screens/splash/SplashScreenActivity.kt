@@ -16,12 +16,13 @@ class SplashScreenActivity : AppCompatActivity() {
         checkUser()
         finish()
     }
-    private fun checkUser(){
+
+    private fun checkUser() {
         val firebaseUser = auth.currentUser
-        if(firebaseUser == null){
+        if (firebaseUser == null) {
             //user not logged
             startActivity(Intent(this, EntryActivity::class.java))
-        }else{
+        } else {
             startActivity(Intent(this, MainActivity::class.java))
         }
     }

@@ -1,6 +1,8 @@
 package com.example.mediationapp.presentor.screens.main
 
 import android.util.Log
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,10 @@ import com.example.mediationapp.domain.model.FeelingsElement
 import com.example.mediationapp.domain.model.MeditationElement
 import com.example.mediationapp.data.repository.BlockRepository
 import com.example.mediationapp.data.repository.FeelingsRepository
+import com.example.mediationapp.data.repository.UserRepository
+import com.example.mediationapp.domain.model.User
+import com.example.mediationapp.presentor.ui_events.Events
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -18,20 +24,22 @@ import java.util.*
 class MainViewModel : ViewModel() {
 
     private val blockRepository = BlockRepository()
+    private val userRepository = UserRepository()
     private val feelingsRepository = FeelingsRepository()
 
-    val blockList =  MutableLiveData<List<BlockElement>>()
+    val userLiveData: MutableLiveData<User?> = MutableLiveData()
+    val blockList = MutableLiveData<List<BlockElement>>()
     val feelingsList = MutableLiveData<List<FeelingsElement>>()
 
-    fun getList(){
+    fun getList() {
         blockRepository.loadBlockItems()
-        viewModelScope.launch{
+        viewModelScope.launch {
             blockRepository.sharedList
                 .catch { e ->
                     if (e !is IOException) throw e // rethrow all but IOException
                     Log.e("UserProfileViewModel", e.toString())
                 }
-                .collect{
+                .collect {
                     blockList.postValue(it)
                 }
         }
@@ -42,8 +50,18 @@ class MainViewModel : ViewModel() {
             }
         }
     }
-    fun createBlocks(){
-        for (i in 0..5){
+
+    fun getUserInfo() {
+        viewModelScope.launch {
+            userRepository.loadUserInfo()
+            userRepository.sharedList.collectLatest {
+                userLiveData.postValue(it)
+            }
+        }
+    }
+
+    fun createBlocks() {
+        for (i in 0..5) {
             val block = BlockElement(
                 Random().nextInt(),
                 listOfTitle[i],
@@ -54,8 +72,9 @@ class MainViewModel : ViewModel() {
             blockRepository.addItem(block)
         }
     }
-    fun createFeelings(){
-        for (i in 0..5){
+
+    fun createFeelings() {
+        for (i in 0..5) {
             val feelingsItem = FeelingsElement(
                 Random().nextInt(),
                 listOfFeelngsTitle[i],
@@ -64,7 +83,8 @@ class MainViewModel : ViewModel() {
             feelingsRepository.addItem(feelingsItem)
         }
     }
-    companion object{
+
+    companion object {
         val listOfUrl = listOf(
             "https://www.stateofmind.it/wp-content/uploads/2020/07/Psicologo-delle-cure-primare-riflessioni-sulla-figura-e-disegno-di-legge.jpeg",
             "https://hub.allergosan.com/wp-content/uploads/2021/03/1200x1200-darm-ernaehrung-768x768-1.png",
@@ -74,23 +94,24 @@ class MainViewModel : ViewModel() {
             "https://www.forumsalute.it/media/ckeditor/1531838332_intestino_felice.jpg",
         )
         val litOfMainText = listOf(
-            "MainText", "MainText","MainText","MainText","MainText","MainText",
+            "MainText", "MainText", "MainText", "MainText", "MainText", "MainText",
         )
         val listOfDescription = listOf(
-        "Когнитивные искажения. Способы решения",
-        "Правильное питание - как залог душевного равновесия",
-        "Иследования собственного Я ",
-        "Медитация. Основы для начинающих",
-        "Техники медитации для успокоения",
-        "Как справиться со стрессом после празников ?"
+            "Когнитивные искажения. Способы решения",
+            "Правильное питание - как залог душевного равновесия",
+            "Иследования собственного Я ",
+            "Медитация. Основы для начинающих",
+            "Техники медитации для успокоения",
+            "Как справиться со стрессом после празников ?"
         )
         val listOfTitle = listOf(
             "Когнитивные искажения",
-        "Питание",
-        "Иследования",
-        "Медитация",
-        "Техники",
-        "Праздники")
+            "Питание",
+            "Иследования",
+            "Медитация",
+            "Техники",
+            "Праздники"
+        )
         val listOfFeelngsTitle = listOf(
             "Спокойным",
             "Расслабленным",

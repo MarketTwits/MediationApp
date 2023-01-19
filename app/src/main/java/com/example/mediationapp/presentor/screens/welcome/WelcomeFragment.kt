@@ -22,8 +22,8 @@ class WelcomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View{
-        binding = FragmentWelcomeBinding.inflate(inflater,container,false)
+    ): View {
+        binding = FragmentWelcomeBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -40,7 +40,7 @@ class WelcomeFragment : Fragment() {
         }
     }
 
-    private fun fragmentNavigation(fragmentCotnainer : Int, fragment : Fragment ){
+    private fun fragmentNavigation(fragmentCotnainer: Int, fragment: Fragment) {
         parentFragmentManager.beginTransaction()
             .addToBackStack(null)
             .replace(fragmentCotnainer, fragment)

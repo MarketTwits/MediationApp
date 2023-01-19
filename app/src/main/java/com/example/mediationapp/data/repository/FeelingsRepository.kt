@@ -27,9 +27,11 @@ class FeelingsRepository {
                 Log.d("FeelingsRepo", "item added success")
             }
             .addOnFailureListener { exeption ->
-                Log.d("FeelingsRepo", "item added failed: ${exeption.message}") }
+                Log.d("FeelingsRepo", "item added failed: ${exeption.message}")
+            }
     }
-    fun loadFeelingItems(){
+
+    fun loadFeelingItems() {
         val list = arrayListOf<FeelingsElement>()
         val blockListDb = FirebaseDatabase.getInstance()
             .getReference("Feelings") //user table
@@ -41,15 +43,18 @@ class FeelingsRepository {
                 // Get the data from the snapshot
                 scope.launch {
                     try {
-                        for (blockSnapshot in snapshot.children){
+                        for (blockSnapshot in snapshot.children) {
                             val item = blockSnapshot.getValue(FeelingsElement::class.java)
                             if (item != null) {
                                 list.add(item)
                             }
                         }
                         sharedList.emit(list)
-                    }catch (e : Exception){
-                        Log.e("FeelingsRepo", "Error loading list ---> ${e.message}" +  e.message.toString())
+                    } catch (e: Exception) {
+                        Log.e(
+                            "FeelingsRepo",
+                            "Error loading list ---> ${e.message}" + e.message.toString()
+                        )
                     }
                 }
                 // Do something with the data

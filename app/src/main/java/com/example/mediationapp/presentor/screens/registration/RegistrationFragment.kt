@@ -12,26 +12,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 
-
 class RegistrationFragment : Fragment() {
 
 
     // TODO: Rename and change types of parameters
     lateinit var binding: FragmentRegistrationBinding
     lateinit var viewModel: AuthViewModel
-    private val auth = FirebaseAuth.getInstance()
-
-    private val userDbReference = FirebaseDatabase.getInstance().reference.child("Users")
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View{
+    ): View {
         // Inflate the layout for this fragment
-        binding = FragmentRegistrationBinding.inflate(inflater,container, false)
-
+        binding = FragmentRegistrationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,18 +34,20 @@ class RegistrationFragment : Fragment() {
 
         setupListeners()
     }
-    private fun setupListeners(){
+
+    private fun setupListeners() {
         binding.btRegistration.setOnClickListener {
             signUpUser()
         }
     }
-    private fun signUpUser(){
+
+    private fun signUpUser() {
         val email = binding.edEmail.text.toString().trim()
         val password = binding.edPassword.text.toString().trim()
         val name = binding.edName.text.toString().trim()
-        val age =  binding.edAge.text.toString().trim()
+        val age = binding.edAge.text.toString().trim()
 
-        viewModel.signUpUser(email,password,name,age,requireContext())
+        viewModel.signUpUser(email, password, name, age, requireContext())
 
     }
 

@@ -11,7 +11,7 @@
 
 
     <TextView
-        android:id="@+id/tv_welcome_main2"
+        android:id="@+id/tv_UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -20,6 +20,7 @@
         android:text="Эмиль"
         android:textColor="@color/white"
         android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/im_user_image" />
@@ -37,27 +38,29 @@
         app:layout_constraintTop_toBottomOf="@+id/linear_layout_top_panel" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayoutForRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_welcome_main2">
+        app:layout_constraintTop_toBottomOf="@+id/tv_UserName">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_users_mood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="25dp"
+            android:paddingHorizontal="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingVertical="@dimen/cardview_compat_inset_shadow"
             android:paddingBottom="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_welcome_main2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_UserName"
             app:spanCount="2" />
 
     </LinearLayout>
@@ -122,10 +125,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_welcome_main2" />
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayoutForRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayoutForRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/linearLayoutForRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/tv_UserName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

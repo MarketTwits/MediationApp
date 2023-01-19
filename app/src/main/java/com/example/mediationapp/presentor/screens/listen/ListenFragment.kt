@@ -17,29 +17,31 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ListenFragment : Fragment() {
 
-    private lateinit var binding : FragmentListenBinding
-    private lateinit var dialog : BottomSheetDialog
-    private lateinit var timeRecyclerView : RecyclerView
+    private lateinit var binding: FragmentListenBinding
+    private lateinit var dialog: BottomSheetDialog
+    private lateinit var timeRecyclerView: RecyclerView
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View{
+    ): View {
         // Inflate the layout for this fragment
-        binding = FragmentListenBinding.inflate(inflater,container, false)
+        binding = FragmentListenBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       binding.tvTime.setOnClickListener {
-           showBottomSheet()
-       }
-       binding.imTimeIcon.setOnClickListener {
+        binding.tvTime.setOnClickListener {
             showBottomSheet()
-       }
+        }
+        binding.imTimeIcon.setOnClickListener {
+            showBottomSheet()
+        }
     }
-   private  fun showBottomSheet(){
+
+    private fun showBottomSheet() {
         //tv_time and timeIcon make click
         val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_dialog_time, null)
         dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
@@ -54,7 +56,6 @@ class ListenFragment : Fragment() {
             binding.tvTime.text = it
             dialog.dismiss()
         }
-
 
 
     }

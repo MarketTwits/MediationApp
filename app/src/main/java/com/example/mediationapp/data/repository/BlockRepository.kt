@@ -30,9 +30,11 @@ class BlockRepository {
                 Log.d("BlockRepo", "item added success")
             }
             .addOnFailureListener { exeption ->
-                Log.d("BlockRepo", "item added failed: ${exeption.message}") }
+                Log.d("BlockRepo", "item added failed: ${exeption.message}")
+            }
     }
-    fun loadBlockItems(){
+
+    fun loadBlockItems() {
         val list = arrayListOf<BlockElement>()
         val blockListDb = FirebaseDatabase.getInstance()
             .getReference("Blocks") //user table
@@ -44,16 +46,19 @@ class BlockRepository {
                 // Get the data from the snapshot
                 scope.launch {
                     try {
-                    for (blockSnapshot in snapshot.children){
-                        val item = blockSnapshot.getValue(BlockElement::class.java)
-                        if (item != null) {
-                            list.add(item)
+                        for (blockSnapshot in snapshot.children) {
+                            val item = blockSnapshot.getValue(BlockElement::class.java)
+                            if (item != null) {
+                                list.add(item)
+                            }
                         }
+                        sharedList.emit(list)
+                    } catch (e: Exception) {
+                        Log.e(
+                            "MOOD_REPO",
+                            "Error loading list ---> ${e.message}" + e.message.toString()
+                        )
                     }
-                    sharedList.emit(list)
-                    }catch (e : Exception){
-                    Log.e("MOOD_REPO", "Error loading list ---> ${e.message}" +  e.message.toString())
-                  }
                 }
 
                 // Do something with the data

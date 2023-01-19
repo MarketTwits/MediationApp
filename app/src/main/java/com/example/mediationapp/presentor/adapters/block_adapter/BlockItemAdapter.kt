@@ -16,14 +16,17 @@ class BlockItemAdapter : ListAdapter<BlockElement,
         RecyclerView.ViewHolder(binding.root) {
 
     }
-    var onBlockClickListener : ((BlockElement) -> Unit)? = null
+
+    var onBlockClickListener: ((BlockElement) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockViewHolder {
 
-        val binding = ItemMainBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMainBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return BlockViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: BlockViewHolder, position: Int) {
         val binding = holder.binding
         val element = getItem(position)

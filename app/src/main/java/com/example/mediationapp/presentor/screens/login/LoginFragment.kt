@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.mediationapp.R
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.databinding.FragmentLoginBinding
 import com.example.mediationapp.data.firebase.FirebaseService
+import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.view_models.AuthViewModel
 
 
 class LoginFragment : Fragment() {
-
 
 
     lateinit var binding: FragmentLoginBinding
@@ -24,7 +25,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View{
+    ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
 
@@ -40,11 +41,13 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         setupListeners()
     }
-    private fun setupListeners(){
+
+    private fun setupListeners() {
         binding.btSignIn.setOnClickListener {
             signInUser()
         }
     }
+
     private fun signInUser() {
         viewModel.signInUser(
             binding.edEmail.text.toString(),
@@ -52,12 +55,12 @@ class LoginFragment : Fragment() {
             requireContext()
         )
     }
-    private fun checkUser(){
+    private fun checkUser() {
         val firebaseUser = FirebaseService.auth.currentUser
-        if(firebaseUser == null){
+        if (firebaseUser == null) {
             //user not logged
-            Toast.makeText(requireContext(), "You need sign in in the app ", Toast.LENGTH_SHORT).show()
-        }else{
+            fragmentToast(null, R.string.you_need_sign_in)
+        } else {
             startActivity(Intent(requireActivity(), MainActivity::class.java))
         }
     }

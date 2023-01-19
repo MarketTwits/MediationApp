@@ -17,11 +17,12 @@ class FeelingsItemAdapter : ListAdapter<FeelingsElement,
 
     }
 
-    var onFeelingsItemClickListener : ((FeelingsElement) -> Unit)? = null
+    var onFeelingsItemClickListener: ((FeelingsElement) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeelingsViewHolder {
 
-        val binding = ItemFeelingsBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemFeelingsBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return FeelingsViewHolder(binding)
     }

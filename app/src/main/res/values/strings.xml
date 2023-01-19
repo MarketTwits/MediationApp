@@ -11,8 +11,10 @@
     <string name="sign_in">Sign In</string>
     <string name="forgot_password">Забыли пароль ?</string>
     <string name="profile">Профиль</string>
-    <string name="hi_emil">С возвращением, Эмиль !</string>
+    <string name="greeting_user">С возвращением, %1$s! </string>
     <string name="how_do_you_fell">Каким ты себя чувствуешь сегодня ?</string>
     <string name="sign_up">Sign Up</string>
     <string name="block_title">Заголовок блока</string>
+    <string name="you_need_sign_in">You need sign in the app</string>
+    <string name="user_not_found">User not found</string>
 </resources>

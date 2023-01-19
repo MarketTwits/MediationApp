@@ -16,7 +16,7 @@ class EntryActivity : AppCompatActivity() {
         fragmentNavigation(R.id.entry_fragment_container, WelcomeFragment())
 
     }
-    fun fragmentNavigation(fragmentCotnainer : Int, fragment : Fragment ){
+    fun fragmentNavigation(fragmentCotnainer: Int, fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(fragmentCotnainer, fragment)
             .commit()

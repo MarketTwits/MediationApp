@@ -14,35 +14,24 @@ import com.example.mediationapp.domain.model.MeditationElement
 class TypeMediationAdapter(
     ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
     var list = listOf<MeditationElement>()
         set(value){
             field = value
             notifyDataSetChanged()
         }
 
-
-    interface OnMeditationClickListener {
-        fun onMeditationClick()
-    }
-
-    interface OnAddClickListener {
-        fun onAddClick(meditation: MeditationElement)
-    }
-
     var onMeditationClickListener : ((MeditationElement) -> Unit)? = null
     var onMediationLongClickListener : ((MeditationElement) -> Unit)? = null
     var onAddClickListener : ((MeditationElement) -> Unit)? = null
 
 
-    inner class MeditationViewHolder(itemView: View, clickListener : OnMeditationClickListener) :
+    inner class MeditationViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.im_item_image_mood)
         val textView: TextView = itemView.findViewById(R.id.tv_item_time)
 
     }
-
-    inner class AddViewHolder(itemView: View, clickListener: OnAddClickListener) :
+    inner class AddViewHolder(itemView: View, ) :
         RecyclerView.ViewHolder(itemView) {
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -51,20 +40,11 @@ class TypeMediationAdapter(
         return when (viewType) {
             VIEW_TYPE_ITEM -> {
                 val view = inflater.inflate(R.layout.item_mood_users, parent, false)
-                MeditationViewHolder(view, object : OnMeditationClickListener {
-                    override fun onMeditationClick() {
-                        //Toast.makeText(parent.context, "Clicked", Toast.LENGTH_SHORT).show()
-                    }
-                })
-
+                MeditationViewHolder(view)
             }
             VIEW_TYPE_ADD -> {
                 val view = inflater.inflate(R.layout.item_add_mood_users, parent, false)
-                AddViewHolder(view, object : OnAddClickListener {
-                    override fun onAddClick(meditation: MeditationElement) {
-                        //addItem(meditation)
-                    }
-                })
+                AddViewHolder(view)
             }
             else -> throw Exception("Invalid view type")
         }
@@ -94,7 +74,6 @@ class TypeMediationAdapter(
             }
         }
     }
-
     override fun getItemViewType(position: Int): Int {
         return if (position == list.size - 1) {
             VIEW_TYPE_ADD
@@ -106,15 +85,6 @@ class TypeMediationAdapter(
         list = items.toMutableList()
         notifyDataSetChanged()
     }
-//    fun deleteItem(element : MeditationElement, position: Int){
-//        list.remove(element)
-//        notifyItemRemoved(position)
-//    }
-//    fun addItem(item: MeditationElement) {
-//        _meditationList.add(item)
-//        notifyItemInserted(_meditationList.size + 1)
-//    }
-
     override fun getItemCount(): Int {
         return list.size
     }

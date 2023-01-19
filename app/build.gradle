@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.mediationapp"
         minSdk 24
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -47,6 +47,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-common-ktx:20.2.0'
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+
+    //ImagePicker
+    implementation 'com.github.yalantis:ucrop:2.2.6'
 
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies
@@ -54,7 +58,12 @@ dependencies {
     implementation 'androidx.databinding:databinding-runtime:7.3.1'
 
     //Lifecycle
+    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
