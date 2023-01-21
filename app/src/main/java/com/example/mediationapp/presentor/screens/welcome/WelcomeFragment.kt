@@ -30,8 +30,8 @@ class WelcomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProvider(this)[WelcomeViewModel::class.java]
+
         binding.signInButton.setOnClickListener {
             fragmentNavigation(R.id.entry_fragment_container, LoginFragment())
         }

@@ -11,12 +11,12 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="369dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
 
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:textColorHint="@color/white"
         android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
         app:boxStrokeColor="@color/white"
@@ -38,12 +38,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="369dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+
         android:textColorHint="@color/white"
         android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
-
         app:boxStrokeColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayoutEmail"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutEmail"
@@ -70,7 +72,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="369dp"
         android:layout_height="55dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
         android:textColorHint="@color/white"
         android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
         app:boxStrokeColor="@color/white"
@@ -94,7 +98,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="369dp"
         android:layout_height="55dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
         android:textColorHint="@color/white"
         android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
         app:boxStrokeColor="@color/white"
@@ -113,28 +119,15 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/bt_signIn"
-        android:layout_width="320dp"
-        android:layout_height="61dp"
-        android:layout_marginBottom="56dp"
-        android:background="@drawable/round_style"
-        android:fontFamily="@font/alegreya_medium"
-        android:text="@string/sign_in"
-        android:textAllCaps="false"
-        android:textSize="25sp"
-        app:backgroundTint="@color/light_theame_green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bt_registration"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="@+id/bt_registration" />
-
 
     <Button
         android:id="@+id/bt_registration"
-        android:layout_width="320dp"
-        android:layout_height="61dp"
-        android:layout_marginBottom="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/round_style"
         android:fontFamily="@font/alegreya_medium"
         android:text="@string/sign_up"
@@ -143,7 +136,10 @@
         app:backgroundTint="@color/light_theame_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAge"
+        app:layout_constraintVertical_bias="0.687" />
 
     <TextView
         android:id="@+id/tv_reg"

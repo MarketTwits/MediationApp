@@ -27,8 +27,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/im_user_image"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_foreground"
         app:civ_border_color="@color/white"
         app:civ_border_width="1dp"
@@ -45,6 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="?attr/actionBarSize"
         app:layout_constraintTop_toBottomOf="@+id/tv_UserName">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -56,11 +57,12 @@
             android:paddingEnd="20dp"
             android:paddingVertical="@dimen/cardview_compat_inset_shadow"
             android:paddingBottom="?attr/actionBarSize"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_UserName"
+            tools:listitem="@layout/item_mood_users"
             app:spanCount="2" />
 
     </LinearLayout>

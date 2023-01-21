@@ -69,7 +69,6 @@ class FirebaseRepository {
                 Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
                 Log.d("FirebaseRepository", "Exception: ${it.message}")
             }
-
     }
 
     private fun openCurrentActivity(context: Context, activity: Class<MainActivity>) {

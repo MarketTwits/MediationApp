@@ -8,13 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediationapp.domain.model.BlockElement
 import com.example.mediationapp.domain.model.FeelingsElement
-import com.example.mediationapp.domain.model.MeditationElement
 import com.example.mediationapp.data.repository.BlockRepository
 import com.example.mediationapp.data.repository.FeelingsRepository
 import com.example.mediationapp.data.repository.UserRepository
 import com.example.mediationapp.domain.model.User
-import com.example.mediationapp.presentor.ui_events.Events
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

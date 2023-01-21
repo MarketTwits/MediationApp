@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mediationapp.R
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.databinding.FragmentLoginBinding
-import com.example.mediationapp.data.firebase.FirebaseService
 import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.view_models.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 class LoginFragment : Fragment() {
@@ -56,7 +56,7 @@ class LoginFragment : Fragment() {
         )
     }
     private fun checkUser() {
-        val firebaseUser = FirebaseService.auth.currentUser
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
         if (firebaseUser == null) {
             //user not logged
             fragmentToast(null, R.string.you_need_sign_in)

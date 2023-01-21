@@ -21,7 +21,6 @@ class ListenFragment : Fragment() {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var timeRecyclerView: RecyclerView
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,

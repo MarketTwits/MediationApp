@@ -24,6 +24,7 @@ import com.example.mediationapp.R
 import com.example.mediationapp.presentor.adapters.users_mood_adapter.TypeMediationAdapter
 import com.example.mediationapp.databinding.FragmentUserProfileBinding
 import com.example.mediationapp.presentor.ui_events.fragmentToast
+import com.example.mediationapp.presentor.ui_events.getUCropResultContract
 import com.google.android.gms.common.internal.ImagesContract
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
@@ -38,40 +39,19 @@ class UserProfileFragment : Fragment() {
     private lateinit var adapter: TypeMediationAdapter
     private lateinit var viewModel: UserProfileViewModel
 
-
-    //todo refactor crop image code
-
-    private val uCropActivityResultContracts = object : ActivityResultContract<List<Uri>, Uri>() {
-        override fun createIntent(context: Context, input: List<Uri>): Intent {
-            val inptuUri = input[0]
-            val output = input[1]
-            val uCrop = UCrop.of(inptuUri, output)
-
-                return uCrop.getIntent(context)
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri {
-            return UCrop.getOutput(intent!!)!!
-        }
-    }
-    //    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-    //        if (uri != null) {
-    //            viewModel.loadUserImage(uri)
-    //        }
-    //    }
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        val outputUri = File(requireActivity().filesDir, "croppedImage.jpg").toUri()
-        val listUri = listOf(uri!!, outputUri)
-        loadCropImage.launch(listUri)
-    }
-
     private val loadCropImage =
-        registerForActivityResult(uCropActivityResultContracts) { uri: Uri? ->
+        registerForActivityResult(getUCropResultContract()) { uri: Uri? ->
             if (uri != null) {
                 viewModel.loadUserImage(uri)
             }
         }
-
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            val outputUri = File(requireActivity().filesDir, "croppedImage.jpg").toUri()
+            val listUri = listOf(uri, outputUri)
+            loadCropImage.launch(listUri)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,

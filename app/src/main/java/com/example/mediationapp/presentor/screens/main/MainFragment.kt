@@ -16,10 +16,10 @@ import com.example.mediationapp.presentor.adapters.block_adapter.BlockItemAdapte
 import com.example.mediationapp.presentor.adapters.feelings_adapter.FeelingsItemAdapter
 import com.example.mediationapp.databinding.FragmentMainBinding
 import com.example.mediationapp.presentor.screens.welcome.EntryActivity
-import com.example.mediationapp.data.firebase.FirebaseService
 import com.example.mediationapp.domain.model.User
 import com.example.mediationapp.presentor.screens.login.LoginFragment
 import com.example.mediationapp.presentor.ui_events.fragmentToast
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
@@ -58,7 +58,7 @@ class MainFragment : Fragment() {
         Logging out the user from the account.
         An intent flag is created in order not to add the previous activity to the backstack
              */
-        FirebaseService.auth.signOut()
+        FirebaseAuth.getInstance().signOut()
         //Open start activity
         val intent = Intent(requireContext(), EntryActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
