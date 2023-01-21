@@ -81,27 +81,23 @@ class UserProfileFragment : Fragment() {
         binding.progressBar.isVisible = true
         viewModel.list.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = false
-            adapter.list = it
+            adapter.submitList(it)
             if (it.isNullOrEmpty()) {
                 //if list with elements null, we create one elements for add button
                 viewModel.addItem()
-                adapter.notifyDataSetChanged()
             } else {
                 adapter.onMediationLongClickListener = {
                     viewModel.deleteItem(it)
-                    adapter.notifyDataSetChanged()
                 }
                 adapter.onMeditationClickListener = {
                     fragmentToast("Clicked")
                 }
                 adapter.onAddClickListener = {
                     viewModel.addItem()
-                    adapter.notifyDataSetChanged()
                 }
             }
         }
     }
-
     private fun loadUserInfoUI() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel.getUserInfo()
