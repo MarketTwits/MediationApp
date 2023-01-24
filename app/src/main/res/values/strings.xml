@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MediationApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="symbols_template">%s / %s</string>
     <string name="last_update_template">Время последнего обновления: %s</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -17,4 +16,7 @@
     <string name="block_title">Заголовок блока</string>
     <string name="you_need_sign_in">You need sign in the app</string>
     <string name="user_not_found">User not found</string>
+    <string name="error_short_password">"Enter more than 5 characters"</string>
+    <string name="enter_correct_email">Enter correct email</string>
+    <string name="enter_correct_age">Enter correct age</string>
 </resources>

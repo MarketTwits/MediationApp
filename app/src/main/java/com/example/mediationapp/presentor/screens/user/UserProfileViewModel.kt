@@ -34,10 +34,6 @@ class UserProfileViewModel : ViewModel() {
         moodRepository.loadDataMoods()
         viewModelScope.launch {
             moodRepository.sharedList
-                .catch { e ->
-                    if (e !is IOException) throw e // rethrow all but IOException
-                    Log.e("UserProfileViewModel", e.toString())
-                }
                 .collect {
                     list.postValue(it)
                 }

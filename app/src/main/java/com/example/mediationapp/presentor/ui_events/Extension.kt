@@ -6,8 +6,8 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
-import com.example.mediationapp.R
-import com.example.mediationapp.presentor.screens.main.MainActivity
+import com.example.mediationapp.presentor.screens.welcome.EntryActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.yalantis.ucrop.UCrop
 
 fun Fragment.fragmentToast(text : String? = null, stringResource : Int? = null){
@@ -18,7 +18,7 @@ fun Fragment.fragmentToast(text : String? = null, stringResource : Int? = null){
         Toast.makeText(requireContext(), stringResource, Toast.LENGTH_SHORT).show()
     }
 }
-fun Fragment.getUCropResultContract() :  ActivityResultContract<List<Uri>, Uri>{
+fun Fragment.getUCropResultContract() : ActivityResultContract<List<Uri>, Uri> {
     val uCropActivityResultContracts = object : ActivityResultContract<List<Uri>, Uri>() {
         override fun createIntent(context: Context, input: List<Uri>): Intent {
             val inptuUri = input[0]
@@ -31,4 +31,10 @@ fun Fragment.getUCropResultContract() :  ActivityResultContract<List<Uri>, Uri>{
         }
     }
     return uCropActivityResultContracts
+}
+fun Fragment.logOutUser(){
+    FirebaseAuth.getInstance().signOut()
+    val intent = Intent(requireContext(), EntryActivity::class.java)
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(intent)
 }

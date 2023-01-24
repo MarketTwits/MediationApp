@@ -60,7 +60,6 @@ class BlockRepository {
                         )
                     }
                 }
-
                 // Do something with the data
             }
 

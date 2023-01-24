@@ -1,15 +1,10 @@
 package com.example.mediationapp.presentor.screens.user
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.pm.CrossProfileApps
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -19,16 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mediationapp.R
-
-
 import com.example.mediationapp.presentor.adapters.users_mood_adapter.TypeMediationAdapter
 import com.example.mediationapp.databinding.FragmentUserProfileBinding
 import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.ui_events.getUCropResultContract
-import com.google.android.gms.common.internal.ImagesContract
-import com.yalantis.ucrop.UCrop
+import com.example.mediationapp.presentor.ui_events.logOutUser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -39,12 +30,7 @@ class UserProfileFragment : Fragment() {
     private lateinit var adapter: TypeMediationAdapter
     private lateinit var viewModel: UserProfileViewModel
 
-    private val loadCropImage =
-        registerForActivityResult(getUCropResultContract()) { uri: Uri? ->
-            if (uri != null) {
-                viewModel.loadUserImage(uri)
-            }
-        }
+
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             val outputUri = File(requireActivity().filesDir, "croppedImage.jpg").toUri()
@@ -52,6 +38,13 @@ class UserProfileFragment : Fragment() {
             loadCropImage.launch(listUri)
         }
     }
+    private val loadCropImage =
+        registerForActivityResult(getUCropResultContract()) { uri: Uri? ->
+            if (uri != null) {
+                viewModel.loadUserImage(uri)
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -60,6 +53,7 @@ class UserProfileFragment : Fragment() {
         binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[UserProfileViewModel::class.java]
         setupTypeRecyclerView()
+
 
         return binding.root
     }
@@ -70,7 +64,6 @@ class UserProfileFragment : Fragment() {
         setupListener()
     }
 
-    @SuppressLint("SuspiciousIndentation")
     private fun setupTypeRecyclerView() {
 
         adapter = TypeMediationAdapter()
@@ -78,6 +71,7 @@ class UserProfileFragment : Fragment() {
         val layoutManager = GridLayoutManager(context, 2)
         binding.rvUsersMood.layoutManager = layoutManager
         viewModel.getList()
+
         binding.progressBar.isVisible = true
         viewModel.list.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = false
@@ -119,6 +113,9 @@ class UserProfileFragment : Fragment() {
     private fun setupListener() {
         binding.imUserImage.setOnClickListener {
             getContent.launch(MIMETYP_IMAGE)
+        }
+        binding.tvLogOut.setOnClickListener {
+            logOutUser()
         }
     }
 

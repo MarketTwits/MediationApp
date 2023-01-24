@@ -2,6 +2,8 @@ package com.example.mediationapp.presentor.screens.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PatternMatcher
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +16,14 @@ import com.example.mediationapp.databinding.FragmentLoginBinding
 import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.view_models.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
+import java.util.regex.Pattern
 
 
 class LoginFragment : Fragment() {
 
 
     lateinit var binding: FragmentLoginBinding
-    lateinit var viewModel: AuthViewModel
+    lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +41,14 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         setupListeners()
     }
 
     private fun setupListeners() {
         binding.btSignIn.setOnClickListener {
             signInUser()
+            validation()
         }
     }
 
@@ -55,6 +59,27 @@ class LoginFragment : Fragment() {
             requireContext()
         )
     }
+
+    private fun validation() {
+        val email = binding.edEmail.text.toString()
+        val password = binding.edPassword.text?.trim().toString()
+        viewModel.validateEntry(email, password)
+        viewModel.isEmailValid.observe(viewLifecycleOwner) {
+            if (!it) {
+                binding.textInputLayoutEmail.error = getString(R.string.enter_correct_email)
+            } else {
+                binding.textInputLayoutEmail.error = null
+            }
+        }
+        viewModel.isPasswordValid.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.textInputLayoutPassword.error = getString(R.string.error_short_password)
+            } else {
+                binding.textInputLayoutPassword.error = null
+            }
+        }
+    }
+
     private fun checkUser() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         if (firebaseUser == null) {

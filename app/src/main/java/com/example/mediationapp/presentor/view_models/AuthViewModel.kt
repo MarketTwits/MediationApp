@@ -1,42 +1,59 @@
 package com.example.mediationapp.presentor.view_models
 
 import android.content.Context
-
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.example.mediationapp.data.firebase.FirebaseRepository
+import com.example.mediationapp.domain.validation.AuthValidatorImpl
 import kotlinx.coroutines.launch
 
 
 class AuthViewModel : ViewModel() {
+//    private val _isEmailValid = MutableLiveData<Boolean>()
+//    val isEmailValid: LiveData<Boolean> = _isEmailValid
+//
+//    private val _isPasswordValid = MutableLiveData<Boolean>()
+//    val isPasswordValid : LiveData<Boolean> = _isPasswordValid
+//
+//
+//
+//    fun signInUser(email: String, password: String, context: Context) {
+//        if (validateLoginInputString(email, password)) {
+//            viewModelScope.launch {
+//                FirebaseRepository().signInUser(email, password, context)
+//            }
+//        }
+//    }
+//
+//    fun signUpUser(email: String, password: String, name: String, age: String, context: Context) {
+//        if (validateRegistrationInputString(email, password, name, age)) {
+//            viewModelScope.launch {
+//                FirebaseRepository().createUser(email, password, name, age, context)
+//            }
+//        }
+//    }
+//
+//    //
+//    private val validator = AuthValidatorImpl()
+//
+//
+//
+//    //
+//
+//
+//    private fun validateRegistrationInputString(
+//        email: String,
+//        password: String,
+//        name: String,
+//        age: String,
+//    ): Boolean {
+//        return !(email.isEmpty() || password.isEmpty() || name.isEmpty() || age.isEmpty())
+//    }
+//
+//    private fun validateLoginInputString(email: String, password: String): Boolean {
+//        return !(email.isEmpty() || password.isEmpty())
+//    }
 
-    fun signInUser(email: String, password: String, context: Context) {
-        if (validateLoginInputString(email, password)) {
-            viewModelScope.launch {
-                FirebaseRepository().signInUser(email, password, context)
-            }
-        }
-    }
-
-    fun signUpUser(email: String, password: String, name: String, age: String, context: Context) {
-        if (validateRegistrationInputString(email, password, name, age)) {
-            viewModelScope.launch {
-                FirebaseRepository().createUser(email, password, name, age, context)
-            }
-        }
-    }
-
-    private fun validateRegistrationInputString(
-        email: String,
-        password: String,
-        name: String,
-        age: String,
-    ): Boolean {
-        return !(email.isEmpty() || password.isEmpty() || name.isEmpty() || age.isEmpty())
-    }
-
-    private fun validateLoginInputString(email: String, password: String): Boolean {
-        return !(email.isEmpty() || password.isEmpty())
-    }
 }

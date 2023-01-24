@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.mediationapp.R
 import com.example.mediationapp.presentor.adapters.block_adapter.BlockItemAdapter
 import com.example.mediationapp.presentor.adapters.feelings_adapter.FeelingsItemAdapter
@@ -19,6 +20,7 @@ import com.example.mediationapp.presentor.screens.welcome.EntryActivity
 import com.example.mediationapp.domain.model.User
 import com.example.mediationapp.presentor.screens.login.LoginFragment
 import com.example.mediationapp.presentor.ui_events.fragmentToast
+import com.example.mediationapp.presentor.ui_events.logOutUser
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
@@ -53,18 +55,6 @@ class MainFragment : Fragment() {
         setupBlockRecyclerView()
     }
 
-    private fun logOutUser() {
-        /*
-        Logging out the user from the account.
-        An intent flag is created in order not to add the previous activity to the backstack
-             */
-        FirebaseAuth.getInstance().signOut()
-        //Open start activity
-        val intent = Intent(requireContext(), EntryActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-    }
-
     private fun setupTypeRecyclerView() {
 
         //BlockFeeleings
@@ -86,10 +76,11 @@ class MainFragment : Fragment() {
     private fun setupBlockRecyclerView() {
         //BlockRV
         binding.progressBarBlock.isVisible = true
+        blockAdapter = BlockItemAdapter()
+        binding.rvBlocks.adapter = blockAdapter
+        binding.rvBlocks.layoutManager = LinearLayoutManager(requireContext())
+
         viewModel.blockList.observe(viewLifecycleOwner) {
-            blockAdapter = BlockItemAdapter()
-            binding.rvBlocks.adapter = blockAdapter
-            binding.rvBlocks.layoutManager = LinearLayoutManager(requireContext())
             blockAdapter.onBlockClickListener = {
                 fragmentToast(it.title.toString())
             }
@@ -108,7 +99,7 @@ class MainFragment : Fragment() {
     private fun updateUi() {
         //SetupListener
         binding.imMenuIcon.setOnClickListener {
-            logOutUser()
+
         }
         loadUserInfoUI()
     }
@@ -118,6 +109,13 @@ class MainFragment : Fragment() {
         viewModel.userLiveData.observe(viewLifecycleOwner) {
             validateUserInfo(it)
             val text = getString(R.string.greeting_user, it?.name)
+            Glide
+                .with(requireContext())
+                .load(it?.imageUrl)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(binding.imProfileImageMain)
+
             binding.tvWelcomeMain.text = text
             binding.tvWelcomeMain.isVisible = true
             binding.tvHowDoYouFeel.isVisible = true
@@ -126,9 +124,7 @@ class MainFragment : Fragment() {
 
     private fun validateUserInfo(user: User?) {
         if (user == null) {
-            val intent = Intent(requireContext(), EntryActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+            logOutUser()
             fragmentToast(null, R.string.user_not_found)
         }
 

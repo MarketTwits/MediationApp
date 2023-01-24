@@ -66,18 +66,20 @@
         android:text="@string/sign_in"
         android:textColor="@color/white"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/im_icon"
         app:layout_constraintStart_toStartOf="@+id/im_icon"
         app:layout_constraintTop_toBottomOf="@+id/im_icon" />
 
     <ImageView
         android:id="@+id/im_icon"
-        android:layout_width="93dp"
-        android:layout_height="93dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="230dp"
         android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,6 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:autofillHints="emailAddress"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -126,6 +129,9 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
         app:passwordToggleContentDescription="description"
         app:passwordToggleEnabled="true"
+        app:counterEnabled="true"
+        app:errorEnabled="true"
+        app:errorTextAppearance= "@style/Animation.Design.BottomSheetDialog"
         app:startIconDrawable="@drawable/baseline_vpn_key_24">
 
         <com.google.android.material.textfield.TextInputEditText

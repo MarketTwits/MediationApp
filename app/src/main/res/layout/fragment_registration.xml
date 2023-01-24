@@ -70,8 +70,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="369dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
@@ -96,8 +96,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutAge"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="369dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
@@ -114,6 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Age"
+            android:inputType="number"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -150,17 +151,19 @@
         android:text="@string/sign_up"
         android:textColor="@color/white"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/im_icon"
         app:layout_constraintStart_toStartOf="@+id/im_icon"
         app:layout_constraintTop_toBottomOf="@+id/im_icon" />
+
     <ImageView
         android:id="@+id/im_icon"
-        android:layout_width="93dp"
-        android:layout_height="93dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="230dp"
         android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
