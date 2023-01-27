@@ -6,52 +6,65 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediationapp.data.firebase.FirebaseRepository
-import com.example.mediationapp.domain.validation.RegistrationValidationImpl
+import com.example.mediationapp.domain.use_case.*
+import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class RegistrationViewModel : ViewModel() {
 
-    private val _isEmailValid = MutableLiveData<Boolean>()
-    val isEmailValid: LiveData<Boolean> = _isEmailValid
+    private val registrationRepository = FirebaseRepository()
 
-    private val _isPasswordValid = MutableLiveData<Boolean>()
-    val isPasswordValid : LiveData<Boolean> = _isPasswordValid
-
-    private val _isAgeValid = MutableLiveData<Boolean>()
-    val isAgeValid : LiveData<Boolean> = _isAgeValid
-
-    private val _isValid = MutableLiveData<Boolean>()
-    val isValid : LiveData<Boolean> = _isValid
+    private val _registrationResult = MutableLiveData<Task<Void>>()
+    val registrationResult: LiveData<Task<Void>> = _registrationResult
 
 
+    private val validateEmail: ValidateEmail = ValidateEmail()
+    private val validatePassword: ValidatePassword = ValidatePassword()
+    private val validateName: ValidateName = ValidateName()
+    private val validateAge: ValidateAge = ValidateAge()
 
 
+    var state = MutableLiveData<RegistrationState>()
 
-    fun signUpUser(email: String, password: String, name: String, age: String, context: Context) {
+    private val validationEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
+
+    fun submitData(email: String, password: String, name: String, age: String) {
+        val emailResult = validateEmail.execute(email)
+        val passwordResult = validatePassword.execute(password)
+        val nameResult = validateName.execute(name)
+        val ageResult = validateAge.execute(age)
+
+        state.value = RegistrationState(
+            emailError = emailResult.errorMessage,
+            passwordError = passwordResult.errorMessage,
+            nameError = nameResult.errorMessage,
+            ageError = ageResult.errorMessage,
+        )
+        val hasError = listOf(
+            emailResult,
+            passwordResult,
+            nameResult,
+            ageResult
+        ).any { !it.successful }
+        if (hasError) return
+
+        viewModelScope.launch {
+            validationEventChannel.send(ValidationEvent.Success)
+        }
+    }
+
+    sealed class ValidationEvent {
+        object Success : ValidationEvent()
+    }
+
+    fun signUpUser(email: String, password: String, name: String, age: String) {
         if (validateRegistrationInputString(email, password, name, age)) {
             viewModelScope.launch {
-                FirebaseRepository().createUser(email, password, name, age, context)
+                FirebaseRepository().createUser(email, password, name, age)
             }
-        }
-    }
-
-    fun validateRegistration(email: String, password: String, age:String) {
-        val validator = RegistrationValidationImpl()
-        viewModelScope.launch {
-            _isEmailValid.value = validator.isEmailValid(email)
-        }
-        viewModelScope.launch {
-            _isPasswordValid.value = validator.isPasswordValid(password)
-        }
-        viewModelScope.launch {
-            _isAgeValid.value = validator.isAgeValid(safeToInt(age))
-        }
-    }
-    private fun safeToInt(string: String): Int {
-        if (string.isNotBlank()) {
-            return string.toInt()
-        } else {
-            return 0
         }
     }
 
@@ -64,4 +77,12 @@ class RegistrationViewModel : ViewModel() {
         return !(email.isEmpty() || password.isEmpty() || name.isEmpty() || age.isEmpty())
     }
 
+    fun checkSucces() {
+        viewModelScope.launch {
+            registrationRepository.registrationResult.collectLatest {
+                _registrationResult.postValue(it)
+            }
+        }
+
+    }
 }

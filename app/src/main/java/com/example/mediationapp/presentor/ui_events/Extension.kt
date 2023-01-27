@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
+import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.presentor.screens.welcome.EntryActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.yalantis.ucrop.UCrop
@@ -37,4 +38,9 @@ fun Fragment.logOutUser(){
     val intent = Intent(requireContext(), EntryActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
+}
+fun Fragment.openCurrentActivity(context: Context, activity: Class<MainActivity>) {
+    val intent = Intent(context, activity)
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(intent)
 }
