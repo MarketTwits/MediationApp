@@ -4,25 +4,23 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mediationapp.domain.model.MeditationElement
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.domain.model.User
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
+import com.example.mediationapp.domain.validation.RegisterError
+import com.example.mediationapp.domain.validation.RegisterSuccess
+import com.example.mediationapp.domain.validation.RegistrationEvent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class FirebaseRepository {
     private val auth = FirebaseAuth.getInstance()
     private val scope = CoroutineScope(Dispatchers.Main)
-    val registrationResult =  MutableSharedFlow<Task<Void>>()
-
+    val registrationResult =  MutableSharedFlow<RegistrationEvent>()
 
 
     fun createUser(email: String, password: String, name: String, age: String,) {
@@ -33,9 +31,12 @@ class FirebaseRepository {
                     }
                 }
                 .addOnFailureListener {
+                    scope.launch {
+                        registrationResult.emit(RegisterError(it))
+                        Log.e("FlowTag", "repository-->$it")
+                    }
 
                 }
-            //updateUserInfo(name,email,context)
         }
 
 
@@ -58,7 +59,6 @@ class FirebaseRepository {
 
     private fun createUserData(name: String, email: String, age: String) {
         val uid = auth.uid.toString()
-
         val user = User(
             uid = uid,
             email = email,
@@ -71,10 +71,14 @@ class FirebaseRepository {
             .child("UserInfo")
             .setValue(user)
             .addOnCompleteListener {
-                taskMessage(it)
+                scope.launch {
+                    //registrationResult.emit(RegisterSuccess(it))
+                }
             }
             .addOnFailureListener {
-
+                scope.launch {
+                    //registrationResult.emit(RegisterError(it))
+                }
             }
     }
 
@@ -87,14 +91,14 @@ class FirebaseRepository {
     companion object {
         const val USER_KEY = "USER_KEY"
     }
-    private fun taskMessage(task : Task<Void> ){
-        scope.launch {
-            if(task.isSuccessful){
-                registrationResult.emit(task)
-            }
-            else{
-                registrationResult.emit(task)
-            }
-        }
-    }
+//    private fun taskMessage(task : Task<Void> ){
+//        scope.launch {
+//            if(task.isSuccessful){
+//                registrationResult.emit(task)
+//            }
+//            else{
+//                registrationResult.emit(task)
+//            }
+//        }
+//    }
 }

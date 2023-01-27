@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.mediationapp.R
+
 import com.example.mediationapp.databinding.FragmentRegistrationBinding
-import com.example.mediationapp.domain.use_case.RegistrationFormEvent
+import com.example.mediationapp.domain.validation.RegisterError
+import com.example.mediationapp.domain.validation.RegisterSuccess
+
+import com.example.mediationapp.domain.validation.RegistrationEvent
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.presentor.screens.main.MainViewModel
 import com.example.mediationapp.presentor.ui_events.fragmentToast
@@ -43,6 +46,20 @@ class RegistrationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[RegistrationViewModel::class.java]
         setupListeners()
+
+        lifecycleScope.launch {
+            viewModel.dataResult.collect{
+                Log.e("FlowTag", "fragment--> $it")
+                when (it) {
+                    is RegisterSuccess -> {
+                        openCurrentActivity(requireContext(), MainActivity::class.java)
+                    }
+                    is RegisterError -> {
+                        fragmentToast(it.result.toString())
+                    }
+                }
+            }
+        }
     }
 
     private fun setupListeners() {
@@ -55,17 +72,13 @@ class RegistrationFragment : Fragment() {
         val password = binding.edPassword.text.toString().trim()
         val name = binding.edName.text.toString().trim()
         val age = binding.edAge.text.toString().trim()
-        validation()
+        validation(email, password, name, age)
         auth()
         //viewModel.signUpUser(email, password, name, age, requireContext())
 
 
     }
-    private fun validation(){
-        val email = binding.edEmail.text.toString()
-        val password = binding.edPassword.text?.trim().toString()
-        val name = binding.edName.text?.trim().toString()
-        val age = binding.edAge.text?.trim().toString()
+    private fun validation(email : String, password : String, name: String, age : String){
 
         viewModel.submitData(email, password, name, age)
         viewModel.state.observe(viewLifecycleOwner){
@@ -92,31 +105,34 @@ class RegistrationFragment : Fragment() {
         }
     }
     private fun auth(){
-        val email = binding.edEmail.text.toString()
-        val password = binding.edPassword.text?.trim().toString()
-        val name = binding.edName.text?.trim().toString()
-        val age = binding.edAge.text?.trim().toString()
-
         lifecycleScope.launch {
             viewModel.validationEvents.collect { event ->
                 when (event) {
                     RegistrationViewModel.ValidationEvent.Success -> {
-                        viewModel.signUpUser(email, password, name, age)
-                        viewModel.checkSucces()
-                        viewModel.registrationResult.observe(viewLifecycleOwner){
-                            fragmentToast(it.result.toString())
-                            if(it.isSuccessful){
-                                openCurrentActivity(requireContext(), MainActivity::class.java)
-                            }else{
-                                fragmentToast(it.result.toString())
-                            }
-                        }
+                        notifyResultUpdate()
                     }
 
                 }
             }
         }
     }
+    private fun notifyResultUpdate(){
+        val email = binding.edEmail.text.toString()
+        val password = binding.edPassword.text?.trim().toString()
+        val name = binding.edName.text?.trim().toString()
+        val age = binding.edAge.text?.trim().toString()
 
 
+        viewModel.signUpUser(email, password, name, age)
+//        viewModel.registrationResult.observe(viewLifecycleOwner){
+//            when (it) {
+//                is RegisterSuccess -> {
+//                    openCurrentActivity(requireContext(), MainActivity::class.java)
+//                }
+//                is RegisterError -> {
+//                    fragmentToast(it.result.toString())
+//                }
+//            }
+//        }
+    }
 }

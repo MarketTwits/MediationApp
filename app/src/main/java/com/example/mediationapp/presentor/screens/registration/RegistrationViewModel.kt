@@ -1,32 +1,37 @@
 package com.example.mediationapp.presentor.screens.registration
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediationapp.data.firebase.FirebaseRepository
 import com.example.mediationapp.domain.use_case.*
+import com.example.mediationapp.domain.validation.RegisterError
+import com.example.mediationapp.domain.validation.RegisterSuccess
+import com.example.mediationapp.domain.validation.RegistrationEvent
 import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class RegistrationViewModel : ViewModel() {
 
+
     private val registrationRepository = FirebaseRepository()
 
-    private val _registrationResult = MutableLiveData<Task<Void>>()
-    val registrationResult: LiveData<Task<Void>> = _registrationResult
-
+    val dataResult = registrationRepository.registrationResult
 
     private val validateEmail: ValidateEmail = ValidateEmail()
     private val validatePassword: ValidatePassword = ValidatePassword()
     private val validateName: ValidateName = ValidateName()
     private val validateAge: ValidateAge = ValidateAge()
 
-
     var state = MutableLiveData<RegistrationState>()
+
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -77,12 +82,12 @@ class RegistrationViewModel : ViewModel() {
         return !(email.isEmpty() || password.isEmpty() || name.isEmpty() || age.isEmpty())
     }
 
-    fun checkSucces() {
+    fun getResult() {
         viewModelScope.launch {
-            registrationRepository.registrationResult.collectLatest {
-                _registrationResult.postValue(it)
-            }
-        }
 
+//            registrationRepository.registrationResult.asSharedFlow().collect{
+//                registrationResult.value = it
+//            }
+        }
     }
 }
