@@ -1,22 +1,19 @@
 package com.example.mediationapp.presentor.screens.login
 
-import android.content.Intent
+import IdentificationError
+import IdentificationSuccess
 import android.os.Bundle
-import android.os.PatternMatcher
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.mediationapp.R
+import androidx.lifecycle.lifecycleScope
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.databinding.FragmentLoginBinding
-import com.example.mediationapp.presentor.ui_events.fragmentToast
-import com.example.mediationapp.presentor.view_models.AuthViewModel
-import com.google.firebase.auth.FirebaseAuth
-import java.util.regex.Pattern
+import com.example.mediationapp.presentor.screens.registration.RegistrationViewModel
+import com.example.mediationapp.presentor.ui_events.*
+import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment() {
@@ -30,12 +27,6 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-
-        //Open logined user
-        binding.btProfile.setOnClickListener {
-            checkUser()
-        }
         return binding.root
     }
 
@@ -43,50 +34,81 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         setupListeners()
+
+        viewModel.progressEvent.observe(viewLifecycleOwner){
+            when(it){
+                is LoadingProgress ->{
+                    binding.progressBalLogin.visibility = View.VISIBLE
+                }
+                is LoadingFinish ->{
+                    binding.progressBalLogin.visibility = View.GONE
+                }
+                else -> {
+                    binding.progressBalLogin.visibility = View.GONE
+                }
+            }
+        }
+
     }
 
     private fun setupListeners() {
         binding.btSignIn.setOnClickListener {
-            signInUser()
             validation()
+            authLiveEvent()
+            signInObserver()
         }
-    }
-
-    private fun signInUser() {
-        viewModel.signInUser(
-            binding.edEmail.text.toString(),
-            binding.edPassword.text.toString(),
-            requireContext()
-        )
     }
 
     private fun validation() {
         val email = binding.edEmail.text.toString()
         val password = binding.edPassword.text?.trim().toString()
-        viewModel.validateEntry(email, password)
-        viewModel.isEmailValid.observe(viewLifecycleOwner) {
-            if (!it) {
-                binding.textInputLayoutEmail.error = getString(R.string.enter_correct_email)
+
+        viewModel.submitData(email, password)
+        viewModel.state.observe(viewLifecycleOwner) {
+            if (it.emailError != null) {
+                binding.textInputLayoutEmail.error = it.emailError
             } else {
                 binding.textInputLayoutEmail.error = null
             }
-        }
-        viewModel.isPasswordValid.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.textInputLayoutPassword.error = getString(R.string.error_short_password)
+            if (it.passwordError != null) {
+                binding.textInputLayoutPassword.error = it.passwordError
             } else {
                 binding.textInputLayoutPassword.error = null
             }
         }
     }
+    private fun signInObserver() {
+        lifecycleScope.launch {
+            viewModel.validationEvents.collect { event ->
+                when (event) {
+                    LoginViewModel.ValidationEvent.Success -> {
+                        startLogin()
+                    }
+                }
+            }
+        }
+    }
+    private fun startLogin(){
+        val email = binding.edEmail.text.toString().trim()
+        val password = binding.edPassword.text.toString().trim()
 
-    private fun checkUser() {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        if (firebaseUser == null) {
-            //user not logged
-            fragmentToast(null, R.string.you_need_sign_in)
-        } else {
-            startActivity(Intent(requireActivity(), MainActivity::class.java))
+        viewModel.signInUser(email, password)
+    }
+
+    private fun authLiveEvent() {
+        viewModel.getResult()
+        lifecycleScope.launch {
+            viewModel.authorizationResult.observe(viewLifecycleOwner) {
+                when (it) {
+                    is IdentificationSuccess -> {
+                        openCurrentActivity(requireContext(), MainActivity::class.java)
+                    }
+                    is IdentificationError -> {
+                        fragmentToast(it.result.message)
+                    }
+                    else -> fragmentToast("Unknown error")
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.mediationapp.domain.use_case
+package com.example.mediationapp.domain.use_case.validation
 
 data class RegistrationState(
     val email : String = "",

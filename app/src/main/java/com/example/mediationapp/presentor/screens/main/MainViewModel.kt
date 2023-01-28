@@ -1,8 +1,6 @@
 package com.example.mediationapp.presentor.screens.main
 
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

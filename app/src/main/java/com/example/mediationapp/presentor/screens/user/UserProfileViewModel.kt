@@ -1,8 +1,6 @@
 package com.example.mediationapp.presentor.screens.user
 
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,12 +9,9 @@ import com.example.mediationapp.data.repository.MoodRepository
 import com.example.mediationapp.data.repository.UserRepository
 import com.example.mediationapp.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 

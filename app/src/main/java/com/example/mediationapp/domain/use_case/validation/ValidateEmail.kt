@@ -1,4 +1,4 @@
-package com.example.mediationapp.domain.use_case
+package com.example.mediationapp.domain.use_case.validation
 
 import android.util.Patterns
 

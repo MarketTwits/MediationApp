@@ -1,6 +1,4 @@
-package com.example.mediationapp.domain.use_case
-
-import com.example.mediationapp.presentor.ui_events.SafeToInt
+package com.example.mediationapp.domain.use_case.validation
 
 class ValidateAge {
 
