@@ -1,5 +1,7 @@
 package com.example.mediationapp.presentor.screens.user
 
+import ResponseError
+import ResponseSuccess
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,9 +18,11 @@ import com.bumptech.glide.Glide
 import com.example.mediationapp.R
 import com.example.mediationapp.presentor.adapters.users_mood_adapter.TypeMediationAdapter
 import com.example.mediationapp.databinding.FragmentUserProfileBinding
+import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.ui_events.getUCropResultContract
 import com.example.mediationapp.presentor.ui_events.logOutUser
+import com.example.mediationapp.presentor.ui_events.openCurrentActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -62,6 +66,8 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loadUserInfoUI()
         setupListener()
+        notifyLoadingState()
+
     }
 
     private fun setupTypeRecyclerView() {
@@ -92,8 +98,12 @@ class UserProfileFragment : Fragment() {
             }
         }
     }
+    private fun notifyLoadingState(){
+
+    }
+
     private fun loadUserInfoUI() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             viewModel.getUserInfo()
         }
         viewModel.userLiveData.observe(viewLifecycleOwner) {

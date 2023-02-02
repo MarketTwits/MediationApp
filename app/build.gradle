@@ -44,40 +44,37 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.google.firebase:firebase-database:20.1.0'
-    implementation 'com.google.firebase:firebase-common-ktx:20.2.0'
+    implementation 'com.google.firebase:firebase-common-ktx:20.3.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
-
     //ImagePicker
     implementation 'com.github.yalantis:ucrop:2.2.6'
-
     // Declare the dependency for the Cloud Firestore library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-firestore-ktx'
-    implementation 'androidx.databinding:databinding-runtime:7.3.1'
-
     //Lifecycle
     implementation "androidx.activity:activity-ktx:1.6.1"
     implementation "androidx.fragment:fragment-ktx:1.5.5"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-
-    implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
-
+    //Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-
     //RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.2.1"
-    //CardView
-
-
+    //ViewPager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
     //Circle imageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //Rounded Image
     implementation 'com.makeramen:roundedimageview:2.3.0'
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.14.2'
+    //PageIndicator
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.4"
+
+
 }

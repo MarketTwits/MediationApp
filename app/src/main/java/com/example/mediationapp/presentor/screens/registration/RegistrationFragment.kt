@@ -1,7 +1,7 @@
 package com.example.mediationapp.presentor.screens.registration
 
-import IdentificationError
-import IdentificationSuccess
+import ResponseError
+import ResponseSuccess
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,7 +16,6 @@ import com.example.mediationapp.presentor.ui_events.LoadingFinish
 import com.example.mediationapp.presentor.ui_events.LoadingProgress
 import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.ui_events.openCurrentActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -40,20 +39,7 @@ class RegistrationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[RegistrationViewModel::class.java]
 
-        viewModel.progressEvent.observe(viewLifecycleOwner){
-            when(it){
-                is LoadingProgress ->{
-                    binding.progressBarRegister.visibility = View.VISIBLE
-                }
-                is LoadingFinish ->{
-                    binding.progressBarRegister.visibility = View.GONE
-                }
-                else -> {
-                    binding.progressBarRegister.visibility = View.GONE
-                }
-            }
-        }
-
+        notifyLoadingState()
         setupListeners()
         registrationLiveEvent()
     }
@@ -77,6 +63,7 @@ class RegistrationFragment : Fragment() {
         Log.e("FlowTag", "--->  $email, $name, $age ")
 
         viewModel.submitData(email, password, name, age)
+
         viewModel.state.observe(viewLifecycleOwner) {
             if (it.emailError != null) {
                 binding.textInputLayoutEmail.error = it.emailError
@@ -101,18 +88,20 @@ class RegistrationFragment : Fragment() {
         }
     }
 
+
     private fun signUp() {
         lifecycleScope.launch {
             viewModel.validationEvents.collect { event ->
                 when (event) {
                     RegistrationViewModel.ValidationEvent.Success -> {
-                        startRegistre()
+                        startRegistration()
                     }
                 }
             }
         }
     }
-    fun startRegistre(){
+
+    fun startRegistration() {
         val email = binding.edEmail.text.toString().trim()
         val password = binding.edPassword.text.toString().trim()
         val name = binding.edName.text.toString().trim()
@@ -125,14 +114,30 @@ class RegistrationFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.registrationResult.observe(viewLifecycleOwner) {
                 when (it) {
-                    is IdentificationSuccess -> {
+                    is ResponseSuccess -> {
                         openCurrentActivity(requireContext(), MainActivity::class.java)
                         fragmentToast(it.result)
                     }
-                    is IdentificationError -> {
+                    is ResponseError -> {
                         fragmentToast(it.result.message)
                     }
                     else -> fragmentToast("Unknown error")
+                }
+            }
+        }
+    }
+
+    private fun notifyLoadingState() {
+        viewModel.progressEvent.observe(viewLifecycleOwner){
+            when(it){
+                is LoadingProgress ->{
+                    binding.progressBarRegister.visibility = View.VISIBLE
+                }
+                is LoadingFinish ->{
+                    binding.progressBarRegister.visibility = View.GONE
+                }
+                else -> {
+                    binding.progressBarRegister.visibility = View.GONE
                 }
             }
         }

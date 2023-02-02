@@ -1,7 +1,7 @@
 package com.example.mediationapp.presentor.screens.login
 
-import IdentificationError
-import IdentificationSuccess
+import ResponseError
+import ResponseSuccess
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.databinding.FragmentLoginBinding
-import com.example.mediationapp.presentor.screens.registration.RegistrationViewModel
 import com.example.mediationapp.presentor.ui_events.*
 import kotlinx.coroutines.launch
 
@@ -34,21 +33,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         setupListeners()
-
-        viewModel.progressEvent.observe(viewLifecycleOwner){
-            when(it){
-                is LoadingProgress ->{
-                    binding.progressBalLogin.visibility = View.VISIBLE
-                }
-                is LoadingFinish ->{
-                    binding.progressBalLogin.visibility = View.GONE
-                }
-                else -> {
-                    binding.progressBalLogin.visibility = View.GONE
-                }
-            }
-        }
-
+        notifyLoadingState()
     }
 
     private fun setupListeners() {
@@ -77,6 +62,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
     private fun signInObserver() {
         lifecycleScope.launch {
             viewModel.validationEvents.collect { event ->
@@ -88,11 +74,28 @@ class LoginFragment : Fragment() {
             }
         }
     }
-    private fun startLogin(){
+
+    private fun startLogin() {
         val email = binding.edEmail.text.toString().trim()
         val password = binding.edPassword.text.toString().trim()
 
         viewModel.signInUser(email, password)
+    }
+
+    private fun notifyLoadingState() {
+        viewModel.progressEvent.observe(viewLifecycleOwner) {
+            when (it) {
+                is LoadingProgress -> {
+                    binding.progressBalLogin.visibility = View.VISIBLE
+                }
+                is LoadingFinish -> {
+                    binding.progressBalLogin.visibility = View.GONE
+                }
+                else -> {
+                    binding.progressBalLogin.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun authLiveEvent() {
@@ -100,10 +103,10 @@ class LoginFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.authorizationResult.observe(viewLifecycleOwner) {
                 when (it) {
-                    is IdentificationSuccess -> {
+                    is ResponseSuccess -> {
                         openCurrentActivity(requireContext(), MainActivity::class.java)
                     }
-                    is IdentificationError -> {
+                    is ResponseError -> {
                         fragmentToast(it.result.message)
                     }
                     else -> fragmentToast("Unknown error")

@@ -1,6 +1,6 @@
 package com.example.mediationapp.presentor.screens.registration
 
-import IdentificationEvent
+import ResponseEvent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +24,7 @@ class RegistrationViewModel : ViewModel() {
     private val validateAge: ValidateAge = ValidateAge()
 
     var state = MutableLiveData<RegistrationState>()
-    val registrationResult = MutableLiveData<IdentificationEvent>()
+    val registrationResult = MutableLiveData<ResponseEvent>()
     val progressEvent = MutableLiveData<LoadingState>()
 
 
@@ -32,7 +32,7 @@ class RegistrationViewModel : ViewModel() {
     val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun submitData(email: String, password: String, name: String, age: String) {
-        progressEvent.value = LoadingProgress
+
 
         val emailResult = validateEmail.execute(email)
         val passwordResult = validatePassword.execute(password)
@@ -51,7 +51,10 @@ class RegistrationViewModel : ViewModel() {
             nameResult,
             ageResult
         ).any { !it.successful }
-        if (hasError) return
+        if (hasError) {
+            progressEvent.value = LoadingFinish
+            return
+        }
 
         viewModelScope.launch {
             validationEventChannel.send(ValidationEvent.Success)
@@ -63,9 +66,10 @@ class RegistrationViewModel : ViewModel() {
     }
 
     fun signUpUser(email: String, password: String, name: String, age: String) {
-            viewModelScope.launch {
-                registrationRepository.createUser(email, password, name, age)
-            }
+        progressEvent.value = LoadingProgress
+        viewModelScope.launch {
+            registrationRepository.createUser(email, password, name, age)
+        }
     }
 
     fun getResult() {

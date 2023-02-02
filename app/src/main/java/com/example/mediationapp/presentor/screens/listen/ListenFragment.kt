@@ -32,11 +32,19 @@ class ListenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListener()
+    }
+    private fun setupListener(){
         binding.tvTime.setOnClickListener {
             showBottomSheet()
         }
         binding.imTimeIcon.setOnClickListener {
             showBottomSheet()
+        }
+        binding.imAppIcon.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_main, ListeningFragment())
+                .commit()
         }
     }
 
@@ -55,7 +63,5 @@ class ListenFragment : Fragment() {
             binding.tvTime.text = it
             dialog.dismiss()
         }
-
-
     }
 }

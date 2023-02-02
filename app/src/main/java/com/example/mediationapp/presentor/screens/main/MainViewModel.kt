@@ -10,6 +10,9 @@ import com.example.mediationapp.data.repository.BlockRepository
 import com.example.mediationapp.data.repository.FeelingsRepository
 import com.example.mediationapp.data.repository.UserRepository
 import com.example.mediationapp.domain.model.User
+import com.example.mediationapp.presentor.ui_events.LoadingFinish
+import com.example.mediationapp.presentor.ui_events.LoadingProgress
+import com.example.mediationapp.presentor.ui_events.LoadingState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,15 +28,13 @@ class MainViewModel : ViewModel() {
     val userLiveData: MutableLiveData<User?> = MutableLiveData()
     val blockList = MutableLiveData<List<BlockElement>>()
     val feelingsList = MutableLiveData<List<FeelingsElement>>()
+    val loadingState = MutableLiveData<LoadingState>()
 
     fun getList() {
+        loadingState.value = LoadingProgress
         blockRepository.loadBlockItems()
         viewModelScope.launch {
             blockRepository.sharedList
-                .catch { e ->
-                    if (e !is IOException) throw e // rethrow all but IOException
-                    Log.e("UserProfileViewModel", e.toString())
-                }
                 .collect {
                     blockList.postValue(it)
                 }
@@ -42,15 +43,18 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             feelingsRepository.sharedList.collectLatest {
                 feelingsList.postValue(it)
+                loadingState.value = LoadingFinish
             }
         }
     }
 
     fun getUserInfo() {
+        loadingState.value = LoadingProgress
         viewModelScope.launch {
             userRepository.loadUserInfo()
             userRepository.sharedList.collectLatest {
                 userLiveData.postValue(it)
+                loadingState.value = LoadingFinish
             }
         }
     }

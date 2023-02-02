@@ -6,11 +6,6 @@
     app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/listenFragment"
-        android:name="com.example.mediationapp.presentor.screens.listen.ListenFragment"
-        android:label="fragment_listen"
-        tools:layout="@layout/fragment_listen" />
-    <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.mediationapp.presentor.screens.main.MainFragment"
         android:label="fragment_main"
@@ -25,8 +20,8 @@
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" >
         <action
-            android:id="@+id/action_userProfileFragment_to_listenFragment6"
-            app:destination="@id/listenFragment" />
+            android:id="@+id/action_userProfileFragment_to_listeningFragment"
+            app:destination="@id/listeningFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -37,4 +32,8 @@
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listeningFragment"
+        android:name="com.example.mediationapp.presentor.screens.listen.ListeningFragment"
+        android:label="ListeningFragment" />
 </navigation>

@@ -6,7 +6,7 @@
         android:title="home_menu"
         android:icon="@drawable/ic_home_menu"
         />
-    <item android:id="@+id/listenFragment"
+    <item android:id="@+id/listeningFragment"
         android:title="sound_menu"
         android:icon="@drawable/ic_sound_menu"
         />

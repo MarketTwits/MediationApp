@@ -1,8 +1,8 @@
 package com.example.mediationapp.data.firebase
 
-import IdentificationError
-import IdentificationEvent
-import IdentificationSuccess
+import ResponseError
+import ResponseEvent
+import ResponseSuccess
 import android.util.Log
 import com.example.mediationapp.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -16,7 +16,7 @@ class RegistrationRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val scope = CoroutineScope(Dispatchers.Main)
-    val registrationResult = MutableSharedFlow<IdentificationEvent>()
+    val registrationResult = MutableSharedFlow<ResponseEvent>()
 
     fun createUser(email: String, password: String, name: String, age: String) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -25,7 +25,7 @@ class RegistrationRepository {
             }
             .addOnFailureListener {
                 scope.launch {
-                    registrationResult.emit(IdentificationError(it))
+                    registrationResult.emit(ResponseError(it))
                     Log.e("FlowTag", "repository-->$it")
                 }
             }
@@ -45,13 +45,13 @@ class RegistrationRepository {
             .setValue(user)
             .addOnCompleteListener {
                 scope.launch {
-                    registrationResult.emit(IdentificationSuccess(it.isComplete.toString()))
+                    registrationResult.emit(ResponseSuccess(it.isComplete.toString()))
                     Log.e("FlowTag", "repository-->${it.isComplete}")
                 }
             }
             .addOnFailureListener {
                 scope.launch {
-                    registrationResult.emit(IdentificationError(it))
+                    registrationResult.emit(ResponseError(it))
                 }
             }
     }

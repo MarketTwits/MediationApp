@@ -44,3 +44,11 @@ fun Fragment.openCurrentActivity(context: Context, activity: Class<MainActivity>
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
     context.startActivity(intent)
 }
+fun Fragment.divideList(data: List<String>): List<List<String>> {
+    val result = mutableListOf<List<String>>()
+    for (i in data.indices step 9) {
+        val subList = data.subList(i, (i + 9).coerceAtMost(data.size))
+        result.add(subList)
+    }
+    return result
+}

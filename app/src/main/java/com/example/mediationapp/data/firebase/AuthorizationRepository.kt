@@ -1,8 +1,8 @@
 package com.example.mediationapp.data.firebase
 
-import IdentificationError
-import IdentificationEvent
-import IdentificationSuccess
+import ResponseError
+import ResponseEvent
+import ResponseSuccess
 
 
 
@@ -15,19 +15,19 @@ import kotlinx.coroutines.launch
 class AuthorizationRepository {
     private val auth = FirebaseAuth.getInstance()
     private val scope = CoroutineScope(Dispatchers.Main)
-    val authorizationResult = MutableSharedFlow<IdentificationEvent>()
+    val authorizationResult = MutableSharedFlow<ResponseEvent>()
 
 
     fun signInUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                     scope.launch {
-                        authorizationResult.emit(IdentificationSuccess(it.toString()))
+                        authorizationResult.emit(ResponseSuccess(it.toString()))
                     }
             }
             .addOnFailureListener {
                 scope.launch {
-                    authorizationResult.emit(IdentificationError(it))
+                    authorizationResult.emit(ResponseError(it))
                 }
             }
     }

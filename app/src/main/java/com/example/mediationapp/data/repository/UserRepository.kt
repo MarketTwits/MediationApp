@@ -1,9 +1,10 @@
 package com.example.mediationapp.data.repository
 
+import ResponseError
+import ResponseEvent
+import ResponseSuccess
 import android.net.Uri
 import android.util.Log
-import com.example.mediationapp.domain.model.FeelingsElement
-import com.example.mediationapp.domain.model.MeditationElement
 import com.example.mediationapp.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -13,30 +14,23 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.io.File
-import kotlin.concurrent.timerTask
-import kotlin.system.measureNanoTime
-import kotlin.system.measureTimeMillis
-import kotlin.time.measureTime
-
 class UserRepository {
 
     val sharedList = MutableSharedFlow<User?>()
+    val responseEvent = MutableSharedFlow<ResponseEvent>()
     private val auth = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private val scope = CoroutineScope(Dispatchers.IO)
-
     private val storageRef = FirebaseStorage.getInstance().reference
+
     private val imagesRef = storageRef.child("users_images").child(auth).child("userImage")
 
     suspend fun addUserImage(imageUri: Uri) {
         val uploadTask = imagesRef.putFile(imageUri)
             .addOnCompleteListener {
-                //getImageUrl
-                val url = imagesRef.downloadUrl.addOnCompleteListener { task ->
+                    imagesRef.downloadUrl.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val downloadUri = task.result
                         val addImageUrlInUserProfile = FirebaseDatabase.getInstance()
@@ -46,11 +40,17 @@ class UserRepository {
                             .child("imageUrl") //mood item
                             .setValue(downloadUri.toString())
                         Log.e("UserRepository", "Loading image succes ---> ")
+                        scope.launch {
+                            responseEvent.emit(ResponseSuccess(it.toString()))
+                        }
                     }
                 }
             }
             .addOnFailureListener {
                 Log.e("UserRepository", "Loading image failed ---> " + it.message)
+                scope.launch {
+                    responseEvent.emit(ResponseError(it))
+                }
             }
         uploadTask.await().storage.downloadUrl.await()
     }
@@ -67,7 +67,6 @@ class UserRepository {
                         sharedList.emit(user)
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("firebase", "Error getting data", error.toException())
                 }

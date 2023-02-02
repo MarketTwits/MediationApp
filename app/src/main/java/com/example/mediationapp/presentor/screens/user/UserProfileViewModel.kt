@@ -1,5 +1,6 @@
 package com.example.mediationapp.presentor.screens.user
 
+import ResponseEvent
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,8 @@ import com.example.mediationapp.domain.model.MeditationElement
 import com.example.mediationapp.data.repository.MoodRepository
 import com.example.mediationapp.data.repository.UserRepository
 import com.example.mediationapp.domain.model.User
+import com.example.mediationapp.presentor.ui_events.LoadingProgress
+import com.example.mediationapp.presentor.ui_events.LoadingState
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +27,8 @@ class UserProfileViewModel : ViewModel() {
 
     val userLiveData: MutableLiveData<User?> = MutableLiveData()
     val list = MutableLiveData<List<MeditationElement>>()
+    val loadingState = MutableLiveData<LoadingState>()
+    val responseEvent = MutableLiveData<ResponseEvent>()
 
     fun getList() {
         moodRepository.loadDataMoods()
@@ -35,6 +40,7 @@ class UserProfileViewModel : ViewModel() {
         }
     }
     fun loadUserImage(imageUri : Uri){
+        loadingState.value = LoadingProgress
         viewModelScope.launch(Dispatchers.IO) {
             userRepository.addUserImage(imageUri)
         }
@@ -55,8 +61,8 @@ class UserProfileViewModel : ViewModel() {
     suspend fun getUserInfo() {
         userRepository.loadUserInfo()
         viewModelScope.launch {
-            userRepository.sharedList.collectLatest {
-                userLiveData.postValue(it)
+            userRepository.sharedList.collect {
+                userLiveData.value = it
             }
         }
     }

@@ -19,6 +19,8 @@ import com.example.mediationapp.databinding.FragmentMainBinding
 import com.example.mediationapp.presentor.screens.welcome.EntryActivity
 import com.example.mediationapp.domain.model.User
 import com.example.mediationapp.presentor.screens.login.LoginFragment
+import com.example.mediationapp.presentor.ui_events.LoadingFinish
+import com.example.mediationapp.presentor.ui_events.LoadingProgress
 import com.example.mediationapp.presentor.ui_events.fragmentToast
 import com.example.mediationapp.presentor.ui_events.logOutUser
 import com.google.firebase.auth.FirebaseAuth
@@ -48,9 +50,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateUi()
+
+        notifyLoadingState()
         viewModel.getList()
-        //loadDataViewModel()
+        loadUserInfoUI()
         setupTypeRecyclerView()
         setupBlockRecyclerView()
     }
@@ -58,34 +61,30 @@ class MainFragment : Fragment() {
     private fun setupTypeRecyclerView() {
 
         //BlockFeeleings
+        feelingsAdapter = FeelingsItemAdapter()
+        binding.rvUserseFeelengs.adapter = feelingsAdapter
+        val horizontallyManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvUserseFeelengs.layoutManager = horizontallyManager
         viewModel.feelingsList.observe(viewLifecycleOwner) {
-            feelingsAdapter = FeelingsItemAdapter()
-            binding.rvUserseFeelengs.adapter = feelingsAdapter
-            val horizontallyManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            binding.rvUserseFeelengs.layoutManager = horizontallyManager
-
-            //TODO
+            feelingsAdapter.submitList(it)
             feelingsAdapter.onFeelingsItemClickListener = {
                 fragmentToast(it.title.toString())
             }
-            feelingsAdapter.submitList(it)
         }
     }
 
     private fun setupBlockRecyclerView() {
         //BlockRV
-        binding.progressBarBlock.isVisible = true
         blockAdapter = BlockItemAdapter()
         binding.rvBlocks.adapter = blockAdapter
         binding.rvBlocks.layoutManager = LinearLayoutManager(requireContext())
-
-        viewModel.blockList.observe(viewLifecycleOwner) {
+        viewModel.blockList.observe(viewLifecycleOwner) { blockList ->
+            blockAdapter.submitList(blockList)
             blockAdapter.onBlockClickListener = {
                 fragmentToast(it.title.toString())
             }
-            blockAdapter.submitList(it)
-            binding.progressBarBlock.isVisible = false
+
         }
     }
 
@@ -94,14 +93,6 @@ class MainFragment : Fragment() {
             viewModel.createFeelings()
             //viewModel.createBlocks()
         }
-    }
-
-    private fun updateUi() {
-        //SetupListener
-        binding.imMenuIcon.setOnClickListener {
-
-        }
-        loadUserInfoUI()
     }
 
     private fun loadUserInfoUI() {
@@ -117,8 +108,23 @@ class MainFragment : Fragment() {
                 .into(binding.imProfileImageMain)
 
             binding.tvWelcomeMain.text = text
-            binding.tvWelcomeMain.isVisible = true
-            binding.tvHowDoYouFeel.isVisible = true
+        }
+    }
+    private fun notifyLoadingState(){
+        viewModel.loadingState.observe(viewLifecycleOwner) {
+            when (it) {
+                is LoadingProgress -> {
+                    binding.progressBarBlock.visibility = View.VISIBLE
+                }
+                is LoadingFinish -> {
+                    binding.progressBarBlock.visibility = View.GONE
+                    binding.tvWelcomeMain.isVisible = true
+                    binding.tvHowDoYouFeel.isVisible = true
+                }
+                else -> {
+                    binding.progressBarBlock.visibility = View.GONE
+                }
+            }
         }
     }
 
@@ -129,6 +135,4 @@ class MainFragment : Fragment() {
         }
 
     }
-
-
 }

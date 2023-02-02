@@ -1,4 +1,4 @@
-sealed class IdentificationEvent
-data class IdentificationSuccess(val result: String) : IdentificationEvent()
-data class IdentificationError(val result: Exception) : IdentificationEvent()
+sealed class ResponseEvent
+data class ResponseSuccess(val result: String) : ResponseEvent()
+data class ResponseError(val result: Exception) : ResponseEvent()
 
