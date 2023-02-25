@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mediationapp.R
 import com.example.mediationapp.databinding.FragmentListenBinding
 import com.example.mediationapp.presentor.adapters.time_adapter.TimeAdapter
+import com.example.mediationapp.presentor.screens.meditation_music.MeditationMusicFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
@@ -41,9 +42,10 @@ class ListenFragment : Fragment() {
         binding.imTimeIcon.setOnClickListener {
             showBottomSheet()
         }
-        binding.imAppIcon.setOnClickListener {
+        binding.btGo.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_main, ListeningFragment())
+                .addToBackStack(null)
+                .replace(R.id.nav_host_fragment_main, MeditationMusicFragment())
                 .commit()
         }
     }
@@ -60,7 +62,7 @@ class ListenFragment : Fragment() {
         dialog.show()
 
         timeAdapter.onSelectedTimeClickListener = {
-            binding.tvTime.text = it
+           // binding.tvTime.text = it
             dialog.dismiss()
         }
     }

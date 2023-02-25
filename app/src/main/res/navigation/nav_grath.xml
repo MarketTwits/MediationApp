@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_grath"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/mainFragment"
+    >
 
     <fragment
         android:id="@+id/mainFragment"
@@ -35,5 +36,15 @@
     <fragment
         android:id="@+id/listeningFragment"
         android:name="com.example.mediationapp.presentor.screens.listen.ListeningFragment"
-        android:label="ListeningFragment" />
+        android:label="ListeningFragment" >
+        <action
+            android:id="@+id/action_listeningFragment_to_meditationMusicFragment"
+            app:destination="@id/meditationMusicFragment"
+            app:popUpTo="@id/listeningFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/meditationMusicFragment"
+        android:name="com.example.mediationapp.presentor.screens.meditation_music.MeditationMusicFragment"
+        android:label="MeditationMusicFragment" />
 </navigation>

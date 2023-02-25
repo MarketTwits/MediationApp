@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
+import com.example.mediationapp.domain.model.MeditationMusic
 import com.example.mediationapp.presentor.screens.main.MainActivity
 import com.example.mediationapp.presentor.screens.welcome.EntryActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -44,8 +45,8 @@ fun Fragment.openCurrentActivity(context: Context, activity: Class<MainActivity>
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
     context.startActivity(intent)
 }
-fun Fragment.divideList(data: List<String>): List<List<String>> {
-    val result = mutableListOf<List<String>>()
+fun Fragment.divideList(data: List<MeditationMusic>): List<List<MeditationMusic>> {
+    val result = mutableListOf<List<MeditationMusic>>()
     for (i in data.indices step 9) {
         val subList = data.subList(i, (i + 9).coerceAtMost(data.size))
         result.add(subList)

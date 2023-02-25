@@ -36,7 +36,5 @@ class FeelingsItemAdapter : ListAdapter<FeelingsElement,
         }
         binding.tvFeelingsTitle.text = element.title
         Glide.with(binding.imFeelingsItem).load(element.imageUrl).into(binding.imFeelingsItem)
-
-
     }
 }

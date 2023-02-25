@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="119dp"
+            android:layout_height="87dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="16dp">
+
+            <View
+                android:id="@+id/im_volume"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:background="@drawable/round_style_20"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/alegreya_regular"
+                android:maxLines="2"
+                android:text="50 %"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/im_volume"
+                app:layout_constraintStart_toStartOf="@+id/im_volume"
+                app:layout_constraintTop_toBottomOf="@+id/im_volume" />
+
+            <ImageView
+                android:id="@+id/im_volume_item"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:src="@drawable/vector_sound_dinamic"
+                app:layout_constraintBottom_toBottomOf="@+id/im_volume"
+                app:layout_constraintEnd_toEndOf="@+id/im_volume"
+                app:layout_constraintStart_toStartOf="@+id/im_volume"
+                app:layout_constraintTop_toTopOf="@+id/im_volume"
+                 />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="119dp"
+            android:layout_height="87dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="16dp">
+
+            <View
+                android:id="@+id/im_intensivity"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:background="@drawable/round_style_20"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_intensivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/alegreya_regular"
+                android:maxLines="2"
+                android:text="50 %"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/im_intensivity"
+                app:layout_constraintStart_toStartOf="@+id/im_intensivity"
+                app:layout_constraintTop_toBottomOf="@+id/im_intensivity" />
+
+            <ImageView
+                android:id="@+id/im_intensivity_item"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:src="@drawable/relax_intensivity"
+                app:layout_constraintBottom_toBottomOf="@+id/im_intensivity"
+                app:layout_constraintEnd_toEndOf="@+id/im_intensivity"
+                app:layout_constraintStart_toStartOf="@+id/im_intensivity"
+                app:layout_constraintTop_toTopOf="@+id/im_intensivity"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="119dp"
+            android:layout_height="87dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="16dp">
+
+            <View
+                android:id="@+id/im_change_sound"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:background="@drawable/round_style_20"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_change_sound_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/alegreya_regular"
+                android:maxLines="1"
+                android:text="Изменить"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/im_change_sound"
+                app:layout_constraintStart_toStartOf="@+id/im_change_sound"
+                app:layout_constraintTop_toBottomOf="@+id/im_change_sound" />
+
+            <ImageView
+                android:id="@+id/im_change_sound_item"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:src="@drawable/fluent_changed"
+                app:layout_constraintBottom_toBottomOf="@+id/im_change_sound"
+                app:layout_constraintEnd_toEndOf="@+id/im_change_sound"
+                app:layout_constraintStart_toStartOf="@+id/im_change_sound"
+                app:layout_constraintTop_toTopOf="@+id/im_change_sound"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

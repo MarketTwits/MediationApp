@@ -10,9 +10,9 @@ import com.example.mediationapp.R
 class TimeAdapter : RecyclerView.Adapter<TimeAdapter.TimeViewHolder>() {
 
     var timeList =
-        listOf("1 мин", "2 мин", "5 мин", "10 мин", "30 мин", "60 мин", "90 мин", "120 мин")
+        listOf(1, 2, 5, 10, 30, 60, 90, 120)
 
-    var onSelectedTimeClickListener: ((String) -> Unit)? = null
+    var onSelectedTimeClickListener: ((Int) -> Unit)? = null
 
     class TimeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val item: TextView = itemView.findViewById(R.id.tvTimeRv)
@@ -26,7 +26,7 @@ class TimeAdapter : RecyclerView.Adapter<TimeAdapter.TimeViewHolder>() {
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         val item = timeList[position]
-        holder.item.text = item
+        holder.item.text = "$item мин"
 
         holder.itemView.setOnClickListener {
             onSelectedTimeClickListener?.invoke(item)
